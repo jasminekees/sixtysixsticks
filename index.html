@@ -270,11 +270,27 @@
   .post-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
   .post-badge{font-size:0.74rem;font-weight:700;padding:5px 11px;border-radius:999px;background:#FBF8F0;border:1.5px solid var(--line);color:var(--ink-soft);}
   .post-photos{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px;}
-  .post-photos img{width:130px;height:130px;object-fit:cover;border-radius:10px;flex-shrink:0;border:2px solid var(--ink);}
+  .post-photo-wrap{position:relative;flex-shrink:0;}
+  .post-photos img{width:130px;height:130px;object-fit:cover;border-radius:10px;flex-shrink:0;border:2px solid var(--ink);display:block;}
+  .dbl-heart{
+    position:absolute;top:50%;left:50%;width:56px;height:56px;
+    transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none;
+    fill:#fff;stroke:#fff;stroke-width:1.5;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+  }
+  .dbl-heart.pop{animation:dblHeartPop .7s ease forwards;}
+  @keyframes dblHeartPop{
+    0%{transform:translate(-50%,-50%) scale(0);opacity:0;}
+    18%{transform:translate(-50%,-50%) scale(1.15);opacity:1;}
+    32%{transform:translate(-50%,-50%) scale(0.95);opacity:1;}
+    75%{transform:translate(-50%,-50%) scale(1);opacity:1;}
+    100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
+  }
   .post-caption{font-size:0.9rem;color:var(--ink);line-height:1.5;margin-bottom:14px;}
   .post-exercises{font-size:0.76rem;color:var(--ink-soft);margin-bottom:12px;font-weight:600;}
   .comment-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
   .comment{background:var(--mustard-light);border-radius:8px;padding:9px 13px;font-size:0.82rem;border:1.5px solid var(--line);}
+  .comment-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+  .comment-body{flex:1;min-width:0;}
   .comment .c-author{font-weight:700;color:var(--coral-ink);margin-right:6px;}
   .comment-form{display:flex;gap:8px;}
   .comment-form input{
@@ -288,18 +304,39 @@
   .comment-form button:hover{background:var(--coral);border-color:var(--coral);}
   .no-photos-note{font-size:0.78rem;color:var(--ink-soft);font-style:italic;}
 
-  /* ---------- Reactions ---------- */
-  .reaction-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
-  .reaction-btn{
-    padding:6px 11px;border-radius:999px;border:1.5px solid var(--line);background:#FBF8F0;
-    font-size:0.85rem;color:var(--ink-soft);font-family:'Space Grotesk';display:inline-flex;align-items:center;gap:4px;
+  /* ---------- Reactions (Instagram-style single heart) ---------- */
+  .post-actions{display:flex;align-items:center;margin-top:10px;}
+  .like-btn{
+    background:none;border:none;padding:2px 6px 2px 0;cursor:pointer;
+    display:inline-flex;align-items:center;line-height:0;
   }
-  .reaction-btn .count{font-family:'Space Mono';font-size:0.72rem;color:var(--ink-soft);}
-  .reaction-btn.mine{border-color:var(--ink);background:var(--pink-light);color:var(--ink);}
-  .reaction-btn.mine .count{color:var(--ink);}
-  .reaction-bar-sm{margin-top:8px;}
-  .reaction-bar-sm .reaction-btn{padding:3px 8px;font-size:0.72rem;background:#fff;}
+  .like-btn svg{width:27px;height:27px;stroke:var(--ink);stroke-width:1.8;fill:none;transition:transform .12s ease;}
+  .like-btn.liked svg{fill:var(--coral-ink);stroke:var(--coral-ink);animation:likePop .38s ease;}
+  .like-btn:active svg{transform:scale(0.85);}
+  @keyframes likePop{
+    0%{transform:scale(1);}
+    30%{transform:scale(1.3);}
+    55%{transform:scale(0.92);}
+    100%{transform:scale(1);}
+  }
+  .like-summary{font-size:0.85rem;font-weight:700;color:var(--ink);margin-top:2px;min-height:1.2em;}
+  .comment-like-btn{
+    background:none;border:none;padding:2px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;flex-shrink:0;
+  }
+  .comment-like-btn svg{width:15px;height:15px;stroke:var(--ink-soft);stroke-width:2;fill:none;transition:transform .12s ease;}
+  .comment-like-btn.liked svg{fill:var(--coral-ink);stroke:var(--coral-ink);animation:likePop .32s ease;}
+  .comment-like-count{font-size:0.68rem;color:var(--ink-soft);font-family:'Space Mono';}
   .comment-time{font-size:0.64rem;color:var(--ink-soft);margin-top:5px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;}
+
+  /* ---------- Post delete ---------- */
+  .post-delete-btn{
+    background:none;border:none;cursor:pointer;padding:4px;color:var(--ink-soft);
+    display:inline-flex;align-items:center;justify-content:center;border-radius:6px;
+  }
+  .post-delete-btn:hover{color:var(--coral-ink);}
+  .post-delete-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;}
+  .post-head-right{display:flex;align-items:center;gap:8px;}
+
 
   @media(max-width:480px){
     .sticker-grid{grid-template-columns:repeat(8,1fr);}
@@ -640,18 +677,28 @@ function fmtTime(iso){
   return d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
 }
 
-const REACTION_EMOJIS = ['❤️','🔥','👏','💪','😂'];
-function reactionBarHtml(reactions, targetKey, extraClass){
-  reactions = reactions || {};
-  const cls = 'reaction-bar' + (extraClass ? ' ' + extraClass : '');
-  return '<div class="'+cls+'" data-reaction-target="'+escapeAttr(targetKey)+'">' +
-    REACTION_EMOJIS.map(em=>{
-      const list = reactions[em] || [];
-      const mine = list.includes(ME) ? ' mine' : '';
-      const count = list.length;
-      return '<button type="button" class="reaction-btn'+mine+'" data-emoji="'+em+'">'+em+(count?' <span class="count">'+count+'</span>':'')+'</button>';
-    }).join('') +
-    '</div>';
+const HEART_PATH = 'M12 21s-6.9-4.35-9.7-8.485C.6 9.847 1.13 6.5 3.55 4.914 5.8 3.44 8.5 4.03 10 5.5L12 7.5l2-2c1.5-1.47 4.2-2.06 6.45-.586 2.42 1.586 2.95 4.933.75 7.601C18.9 16.65 12 21 12 21z';
+function heartSvg(){
+  return '<svg viewBox="0 0 24 24"><path d="'+HEART_PATH+'"/></svg>';
+}
+function likeButtonHtml(reactions, targetKey){
+  const list = (reactions && reactions['❤️']) || [];
+  const mine = list.includes(ME) ? ' liked' : '';
+  return '<button type="button" class="like-btn'+mine+'" data-reaction-target="'+escapeAttr(targetKey)+'" aria-label="Like">'+heartSvg()+'</button>';
+}
+function likeSummaryHtml(reactions){
+  const list = (reactions && reactions['❤️']) || [];
+  if(!list.length) return '<div class="like-summary"></div>';
+  const text = list.length===1 ? (list[0]===ME?'You like this':escapeHtml(list[0])+' likes this') : list.length+' likes';
+  return '<div class="like-summary">'+text+'</div>';
+}
+function commentLikeHtml(reactions, targetKey){
+  const list = (reactions && reactions['❤️']) || [];
+  const mine = list.includes(ME) ? ' liked' : '';
+  return '<button type="button" class="comment-like-btn'+mine+'" data-reaction-target="'+escapeAttr(targetKey)+'" aria-label="Like comment">'
+    + heartSvg()
+    + (list.length ? '<span class="comment-like-count">'+list.length+'</span>' : '')
+    + '</button>';
 }
 function toggleReactionInObj(obj, emoji, user){
   const next = Object.assign({}, obj || {});
@@ -703,6 +750,14 @@ async function fsSet(kind, id, data){
     if(result === undefined){ lastFsError = {code:'timeout', message:'set() timed out after 20s'}; console.error('fsSet timed out', kind, id); return false; }
     return true;
   }catch(e){ lastFsError = e; console.error('fsSet failed', e); return false; }
+}
+async function fsDelete(kind, id){
+  if(!db) return false;
+  try{
+    const result = await withTimeout(docRef(kind, id).delete(), 15000);
+    if(result === undefined){ lastFsError = {code:'timeout', message:'delete() timed out after 15s'}; console.error('fsDelete timed out', kind, id); return false; }
+    return true;
+  }catch(e){ lastFsError = e; console.error('fsDelete failed', e); return false; }
 }
 
 // Like fsSet, but a timeout isn't treated as final failure — the real write keeps
@@ -1201,7 +1256,14 @@ async function renderFeed(){
   const parsed = items.map(it=>{
     const sep = it.id.indexOf('__');
     return { user: it.id.slice(0,sep), date: it.id.slice(sep+2), data: it.data };
-  }).sort((a,b)=> b.date.localeCompare(a.date));
+  }).sort((a,b)=>{
+    // Prefer the actual logged-at timestamp so same-day posts land in true time
+    // order; fall back to the date string for older entries that predate this field.
+    const ta = a.data.loggedAt ? new Date(a.data.loggedAt).getTime() : 0;
+    const tb = b.data.loggedAt ? new Date(b.data.loggedAt).getTime() : 0;
+    if(ta && tb) return tb - ta;
+    return b.date.localeCompare(a.date);
+  });
 
   const top = parsed.slice(0,20);
   const meta = await fsGet('meta', 'config');
@@ -1242,13 +1304,18 @@ async function renderFeed(){
     let photosHtml = '';
     const photosDoc = await fsGet('photos', item.user+'__'+item.date);
     if(photosDoc && photosDoc.photos && photosDoc.photos.length){
-      photosHtml = '<div class="post-photos">' + photosDoc.photos.map(p=>'<img src="'+p+'">').join('') + '</div>';
+      photosHtml = '<div class="post-photos">' + photosDoc.photos.map(p=>
+        '<div class="post-photo-wrap" data-photo-like-target="'+escapeAttr('post|'+item.user+'|'+item.date)+'">'
+        + '<img src="'+p+'" draggable="false">'
+        + '<div class="dbl-heart">'+heartSvg()+'</div>'
+        + '</div>'
+      ).join('') + '</div>';
     }
 
     const postKey = item.user+'__'+item.date;
     const postReactionsDoc = await fsGet('reactions', postKey);
     const postReactions = (postReactionsDoc && postReactionsDoc.items) || {};
-    const postReactionBar = reactionBarHtml(postReactions, 'post|'+item.user+'|'+item.date);
+    const postTargetKey = 'post|'+item.user+'|'+item.date;
 
     const targetKey = escapeAttr(item.user+'|'+item.date);
     const commentsDoc = await fsGet('comments', item.user+'__'+item.date);
@@ -1257,21 +1324,29 @@ async function renderFeed(){
     comments.forEach((c, idx)=>{
       const cTargetKey = 'comment|'+item.user+'|'+item.date+'|'+idx;
       commentsHtml += '<div class="comment">'
-        + '<div><span class="c-author">'+escapeHtml(c.author)+'</span>'+escapeHtml(c.text)+'</div>'
+        + '<div class="comment-row">'
+        + '<div class="comment-body"><span class="c-author">'+escapeHtml(c.author)+'</span>'+escapeHtml(c.text)
         + (c.ts ? '<div class="comment-time">'+fmtTime(c.ts)+'</div>' : '')
-        + reactionBarHtml(c.reactions, cTargetKey, 'reaction-bar-sm')
+        + '</div>'
+        + commentLikeHtml(c.reactions, cTargetKey)
+        + '</div>'
         + '</div>';
     });
     commentsHtml += '</div>';
 
+    const deleteBtnHtml = item.user===ME
+      ? '<button type="button" class="post-delete-btn" data-delete-target="'+escapeAttr(item.user+'|'+item.date)+'" title="Delete post" aria-label="Delete post"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m2 0-1 13a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2L7 7"/></svg></button>'
+      : '';
+
     html += '<div class="post-card">'
-      + '<div class="post-head"><div class="post-who"><div class="post-avatar">'+escapeHtml(initials)+'</div><div><div class="post-name">'+escapeHtml(item.user)+'</div><div class="post-date">'+fmtShort(item.date)+(e.loggedAt?' · '+fmtTime(e.loggedAt):'')+'</div></div></div><span class="post-day-badge">DAY '+dayNum+'</span></div>'
+      + '<div class="post-head"><div class="post-who"><div class="post-avatar">'+escapeHtml(initials)+'</div><div><div class="post-name">'+escapeHtml(item.user)+'</div><div class="post-date">'+fmtShort(item.date)+(e.loggedAt?' · '+fmtTime(e.loggedAt):'')+'</div></div></div><div class="post-head-right"><span class="post-day-badge">DAY '+dayNum+'</span>'+deleteBtnHtml+'</div></div>'
       + '<div class="post-badges">'+badges+'</div>'
       + photosHtml
       + exHtml
       + gymNotesHtml
       + (e.notes ? '<div class="post-caption">'+escapeHtml(e.notes)+'</div>' : '')
-      + postReactionBar
+      + '<div class="post-actions">'+likeButtonHtml(postReactions, postTargetKey)+'</div>'
+      + likeSummaryHtml(postReactions)
       + commentsHtml
       + '<div class="comment-form"><input type="text" placeholder="Leave a comment…" data-comment-input="'+targetKey+'"><button type="button" class="post-comment-btn" data-comment-target="'+targetKey+'">Post</button></div>'
       + '</div>';
@@ -1295,32 +1370,94 @@ async function renderFeed(){
     };
   });
 
-  container.querySelectorAll('.reaction-btn').forEach(btn=>{
+  // Toggles the single heart reaction for a post or a comment.
+  async function toggleLike(target){
+    const parts = target.split('|');
+    const type = parts[0];
+    if(type === 'post'){
+      const owner = parts[1], date = parts[2];
+      const key = owner+'__'+date;
+      const doc = await fsGet('reactions', key);
+      const current = (doc && doc.items) || {};
+      const next = toggleReactionInObj(current, '❤️', ME);
+      await fsSet('reactions', key, { items: next });
+    } else if(type === 'comment'){
+      const owner = parts[1], date = parts[2], idx = parseInt(parts[3],10);
+      const key = owner+'__'+date;
+      const commentsDoc = await fsGet('comments', key);
+      const comments = (commentsDoc && commentsDoc.items) || [];
+      if(comments[idx]){
+        comments[idx].reactions = toggleReactionInObj(comments[idx].reactions, '❤️', ME);
+        await fsSet('comments', key, { items: comments });
+      }
+    }
+  }
+
+  container.querySelectorAll('.like-btn, .comment-like-btn').forEach(btn=>{
     btn.onclick = async ()=>{
-      const bar = btn.closest('[data-reaction-target]');
-      if(!bar) return;
-      const parts = bar.dataset.reactionTarget.split('|');
-      const type = parts[0];
-      const emoji = btn.dataset.emoji;
       btn.disabled = true;
-      if(type === 'post'){
-        const owner = parts[1], date = parts[2];
-        const key = owner+'__'+date;
-        const doc = await fsGet('reactions', key);
-        const current = (doc && doc.items) || {};
-        const next = toggleReactionInObj(current, emoji, ME);
+      await toggleLike(btn.dataset.reactionTarget);
+      renderFeed();
+    };
+  });
+
+  // Instagram-style double-tap-to-like on a post's photos — always likes
+  // (never unlikes) and pops a big heart over the image briefly.
+  container.querySelectorAll('.post-photo-wrap').forEach(wrap=>{
+    let lastTap = 0;
+    async function triggerDoubleLike(){
+      const heart = wrap.querySelector('.dbl-heart');
+      heart.classList.remove('pop');
+      void heart.offsetWidth; // restart animation
+      heart.classList.add('pop');
+      const target = wrap.dataset.photoLikeTarget;
+      const owner = target.split('|')[1], date = target.split('|')[2];
+      const key = owner+'__'+date;
+      const doc = await fsGet('reactions', key);
+      const current = (doc && doc.items) || {};
+      if(!(current['❤️']||[]).includes(ME)){
+        const next = toggleReactionInObj(current, '❤️', ME);
         await fsSet('reactions', key, { items: next });
-      } else if(type === 'comment'){
-        const owner = parts[1], date = parts[2], idx = parseInt(parts[3],10);
-        const key = owner+'__'+date;
-        const commentsDoc = await fsGet('comments', key);
-        const comments = (commentsDoc && commentsDoc.items) || [];
-        if(comments[idx]){
-          comments[idx].reactions = toggleReactionInObj(comments[idx].reactions, emoji, ME);
-          await fsSet('comments', key, { items: comments });
+        const likeBtn = container.querySelector('.like-btn[data-reaction-target="'+CSS.escape(target)+'"]');
+        if(likeBtn) likeBtn.classList.add('liked');
+        const summary = likeBtn ? likeBtn.closest('.post-card').querySelector('.like-summary') : null;
+        if(summary){
+          const list = (current['❤️']||[]).concat([ME]);
+          summary.textContent = list.length===1 ? 'You like this' : list.length+' likes';
         }
       }
-      renderFeed();
+    }
+    wrap.addEventListener('dblclick', triggerDoubleLike);
+    wrap.addEventListener('touchend', ()=>{
+      const now = Date.now();
+      if(now - lastTap < 320) triggerDoubleLike();
+      lastTap = now;
+    });
+  });
+
+  container.querySelectorAll('.post-delete-btn').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const target = btn.dataset.deleteTarget;
+      const sep = target.indexOf('|');
+      const owner = target.slice(0, sep);
+      const date = target.slice(sep+1);
+      if(!confirm('Delete this post? This can\'t be undone.')) return;
+      btn.disabled = true;
+      const key = owner+'__'+date;
+      const logOk = await fsDelete('log', key);
+      await fsDelete('photos', key);
+      await fsDelete('comments', key);
+      await fsDelete('reactions', key);
+      if(logOk){
+        showToast('Post deleted');
+        renderFeed();
+        renderDayCounterAndSheet();
+        renderWeek();
+      } else {
+        showToast("Couldn't delete — see red banner for why");
+        showErrorBanner(describeFsError(lastFsError));
+        btn.disabled = false;
+      }
     };
   });
 }
