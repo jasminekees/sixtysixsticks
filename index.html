@@ -645,24 +645,24 @@ function describeFsError(e){
 async function fsGet(kind, id){
   if(!db) return null;
   try{
-    const snap = await withTimeout(docRef(kind, id).get(), 9000);
-    if(snap === undefined){ lastFsError = {code:'timeout', message:'get() timed out after 9s'}; console.error('fsGet timed out', kind, id); return null; }
+    const snap = await withTimeout(docRef(kind, id).get(), 12000);
+    if(snap === undefined){ lastFsError = {code:'timeout', message:'get() timed out after 12s'}; console.error('fsGet timed out', kind, id); return null; }
     return snap.exists ? snap.data() : null;
   }catch(e){ lastFsError = e; console.error('fsGet failed', e); return null; }
 }
 async function fsSet(kind, id, data){
   if(!db) return false;
   try{
-    const result = await withTimeout(docRef(kind, id).set(data), 9000);
-    if(result === undefined){ lastFsError = {code:'timeout', message:'set() timed out after 9s'}; console.error('fsSet timed out', kind, id); return false; }
+    const result = await withTimeout(docRef(kind, id).set(data), 20000);
+    if(result === undefined){ lastFsError = {code:'timeout', message:'set() timed out after 20s'}; console.error('fsSet timed out', kind, id); return false; }
     return true;
   }catch(e){ lastFsError = e; console.error('fsSet failed', e); return false; }
 }
 async function fsListKind(kind){
   if(!db) return null;
   try{
-    const snap = await withTimeout(db.collection(ROOT).get(), 9000);
-    if(snap === undefined){ lastFsError = {code:'timeout', message:'list get() timed out after 9s'}; console.error('fsListKind timed out', kind); return null; }
+    const snap = await withTimeout(db.collection(ROOT).get(), 15000);
+    if(snap === undefined){ lastFsError = {code:'timeout', message:'list get() timed out after 15s'}; console.error('fsListKind timed out', kind); return null; }
     const out = [];
     snap.forEach(d=>{
       if(d.id.startsWith(kind+'__')){
@@ -889,7 +889,7 @@ function escapeAttr(s){
 }
 
 function resizeImage(file, maxDim, quality){
-  maxDim = maxDim || 800; quality = quality || 0.6;
+  maxDim = maxDim || 640; quality = quality || 0.45;
   return new Promise((resolve, reject)=>{
     const reader = new FileReader();
     reader.onload = (e)=>{
@@ -989,13 +989,27 @@ function wireSave(){
     const originalLabel = btn.textContent;
     btn.textContent = 'Saving…';
 
-    let ok = await fsSet('log', logDocId(ME, today), entry);
-    let photosDropped = false;
+    // If the payload is already large, don't wait through a doomed timeout first —
+    // go straight to a lighter version. Firestore documents cap at 1MiB.
+    const fullSize = JSON.stringify(entry).length;
+    let ok, photosDropped = false;
 
-    if(!ok && entry.photos.length){
-      const lighter = Object.assign({}, entry, { photos: [] });
-      const retryOk = await fsSet('log', logDocId(ME, today), lighter);
-      if(retryOk){ ok = true; photosDropped = true; }
+    if(fullSize > 700000 && entry.photos.length){
+      const lighter = Object.assign({}, entry, { photos: entry.photos.slice(0, Math.ceil(entry.photos.length/2)) });
+      ok = await fsSet('log', logDocId(ME, today), lighter);
+      if(ok && lighter.photos.length < entry.photos.length) photosDropped = true;
+      if(!ok){
+        const noPhotos = Object.assign({}, entry, { photos: [] });
+        ok = await fsSet('log', logDocId(ME, today), noPhotos);
+        if(ok) photosDropped = true;
+      }
+    } else {
+      ok = await fsSet('log', logDocId(ME, today), entry);
+      if(!ok && entry.photos.length){
+        const lighter = Object.assign({}, entry, { photos: [] });
+        const retryOk = await fsSet('log', logDocId(ME, today), lighter);
+        if(retryOk){ ok = true; photosDropped = true; }
+      }
     }
 
     btn.disabled = false;
