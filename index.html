@@ -970,6 +970,11 @@ async function renderTodayForm(){
   const today = todayStr();
   document.getElementById('today-heading').textContent = 'Log today · '+fmtShort(today);
   const e = await fsGet('log', logDocId(ME, today));
+  const photosDoc = await fsGet('photos', logDocId(ME, today));
+  if(photosDoc && photosDoc.photos && photosDoc.photos.length){
+    pendingPhotos = photosDoc.photos.slice();
+    renderPhotoGrid();
+  }
   if(!e) return;
   try{
     if(e.steps){ document.getElementById('in-steps').value = e.steps; updateStepsBar(); }
@@ -984,16 +989,13 @@ async function renderTodayForm(){
     if(e.read){ const b=document.querySelector('[data-group="read"][data-val="'+e.read+'"]'); if(b) b.click(); }
     if(e.mood){ const b=document.querySelector('[data-group="mood"][data-val="'+e.mood+'"]'); if(b) b.click(); }
     if(e.notes) document.getElementById('in-notes').value = e.notes;
-    if(e.photos && e.photos.length){
-      pendingPhotos = e.photos.slice();
-      renderPhotoGrid();
-    }
   }catch(err){}
 }
 
 function wireSave(){
   document.getElementById('save-log').onclick = async ()=>{
     const today = todayStr();
+    const photos = pendingPhotos.slice();
     const entry = {
       steps: parseInt(document.getElementById('in-steps').value)||0,
       gym: selections.gym,
@@ -1004,7 +1006,6 @@ function wireSave(){
       read: selections.read,
       mood: selections.mood,
       notes: document.getElementById('in-notes').value.trim(),
-      photos: pendingPhotos.slice(),
       loggedAt: new Date().toISOString()
     };
 
@@ -1013,50 +1014,63 @@ function wireSave(){
     const originalLabel = btn.textContent;
     btn.textContent = 'Saving…';
 
-    // If the payload is already large, don't wait through a doomed timeout first —
-    // go straight to a lighter version. Firestore documents cap at 1MiB.
-    const fullSize = JSON.stringify(entry).length;
     const docId = logDocId(ME, today);
-    let status, photosDropped = false;
 
-    function onLateResolve(success, err){
-      if(success){
-        showToast('Logged for today (took a bit longer than usual)');
-        renderDayCounterAndSheet();
-        renderWeek();
-        if(document.querySelector('.tab[data-tab="feed"]').classList.contains('active')) renderFeed();
-      } else {
-        showErrorBanner(describeFsError(err));
-      }
+    function refreshAfterSave(){
+      renderDayCounterAndSheet();
+      renderWeek();
+      if(document.querySelector('.tab[data-tab="feed"]').classList.contains('active')) renderFeed();
     }
 
-    if(fullSize > 700000 && entry.photos.length){
-      const lighter = Object.assign({}, entry, { photos: entry.photos.slice(0, Math.ceil(entry.photos.length/2)) });
-      status = await attemptSave('log', docId, lighter, onLateResolve);
-      if(status === 'ok' && lighter.photos.length < entry.photos.length) photosDropped = true;
-      if(status === 'failed'){
-        const noPhotos = Object.assign({}, entry, { photos: [] });
-        status = await attemptSave('log', docId, noPhotos, onLateResolve);
-        if(status === 'ok') photosDropped = true;
+    // 1. Save the core entry first — small and fast, this is the part that matters most.
+    const logStatus = await attemptSave('log', docId, entry, (success, err)=>{
+      if(success){ showToast('Logged for today ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
+      else{ showErrorBanner(describeFsError(err)); }
+    });
+
+    // 2. Save photos as their own separate write. If they're too big, drop down
+    //    progressively rather than letting them threaten the entry that already saved.
+    let photoStatus = 'ok';
+    let photosDropped = false;
+    if(photos.length){
+      let attemptPhotos = photos;
+      let photoSize = JSON.stringify({photos: attemptPhotos}).length;
+      while(photoSize > 700000 && attemptPhotos.length > 1){
+        attemptPhotos = attemptPhotos.slice(0, Math.ceil(attemptPhotos.length/2));
+        photoSize = JSON.stringify({photos: attemptPhotos}).length;
+        photosDropped = true;
       }
-    } else {
-      status = await attemptSave('log', docId, entry, onLateResolve);
-      if(status === 'failed' && entry.photos.length){
-        const lighter = Object.assign({}, entry, { photos: [] });
-        status = await attemptSave('log', docId, lighter, onLateResolve);
-        if(status === 'ok') photosDropped = true;
+      photoStatus = await attemptSave('photos', docId, { photos: attemptPhotos }, (success, err)=>{
+        if(success){ showToast('Photos saved ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
+        else{ showErrorBanner('Photos: ' + describeFsError(err)); }
+      });
+      if(photoStatus === 'failed' && attemptPhotos.length > 1){
+        // one more try with just the first photo
+        photoStatus = await attemptSave('photos', docId, { photos: [attemptPhotos[0]] }, (success, err)=>{
+          if(success){ showToast('Photo saved ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
+          else{ showErrorBanner('Photos: ' + describeFsError(err)); }
+        });
+        photosDropped = true;
       }
     }
 
     btn.disabled = false;
     btn.textContent = originalLabel;
 
-    if(status === 'ok'){
-      showToast(photosDropped ? "Saved, but photos didn't fit — try fewer or smaller ones" : 'Logged for today');
+    if(logStatus === 'ok'){
+      if(photos.length === 0){
+        showToast('Logged for today');
+      } else if(photoStatus === 'ok'){
+        showToast(photosDropped ? "Logged — some photos didn't fit and were left out" : 'Logged for today, photos included');
+      } else if(photoStatus === 'pending'){
+        showToast('Logged for today — photos still uploading, hang tight');
+      } else {
+        showToast("Logged for today, but photos didn't save — try fewer or smaller ones");
+      }
       await renderDayCounterAndSheet();
       await renderWeek();
       if(document.querySelector('.tab[data-tab="feed"]').classList.contains('active')) renderFeed();
-    } else if(status === 'pending'){
+    } else if(logStatus === 'pending'){
       showToast("Still saving — slow connection, hang tight, it'll confirm shortly");
     } else {
       const detail = describeFsError(lastFsError);
@@ -1066,11 +1080,14 @@ function wireSave(){
   };
 }
 
-function showToast(msg){
+let toastHideTimer = null;
+function showToast(msg, duration){
+  duration = duration || 2600;
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2600);
+  if(toastHideTimer) clearTimeout(toastHideTimer);
+  toastHideTimer = setTimeout(()=>t.classList.remove('show'), duration);
 }
 
 async function renderWeek(){
@@ -1169,8 +1186,9 @@ async function renderFeed(){
     }
 
     let photosHtml = '';
-    if(e.photos && e.photos.length){
-      photosHtml = '<div class="post-photos">' + e.photos.map(p=>'<img src="'+p+'">').join('') + '</div>';
+    const photosDoc = await fsGet('photos', item.user+'__'+item.date);
+    if(photosDoc && photosDoc.photos && photosDoc.photos.length){
+      photosHtml = '<div class="post-photos">' + photosDoc.photos.map(p=>'<img src="'+p+'">').join('') + '</div>';
     }
 
     const targetKey = escapeAttr(item.user+'|'+item.date);
