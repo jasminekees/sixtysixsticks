@@ -731,16 +731,18 @@ async function init(){
     return;
   }
 
-  let meta = await fsGet('meta', 'config');
-  let startDate = meta ? meta.startDate : null;
-
-  if(!startDate){
-    startDate = todayStr();
-    await fsSet('meta', 'config', { startDate: startDate });
-  }
-
+  // Returning user — show the app immediately, never gate this behind the network.
+  document.getElementById('onboarding').style.display='none';
   document.getElementById('app').style.display='block';
   boot();
+
+  // Non-blocking: make sure a start date exists, then refresh the counter once known.
+  fsGet('meta', 'config').then(async (meta)=>{
+    if(!meta || !meta.startDate){
+      await fsSet('meta', 'config', { startDate: todayStr() });
+    }
+    renderDayCounterAndSheet();
+  }).catch(()=>{});
 }
 
 document.getElementById('switch-who').onclick = ()=>{
