@@ -1021,11 +1021,17 @@ function wireSave(){
       renderWeek();
       if(document.querySelector('.tab[data-tab="feed"]').classList.contains('active')) renderFeed();
     }
+    // Jumps straight to the Feed tab and renders it, so the person can see
+    // their post land right after it finishes uploading.
+    function goToFeedTab(){
+      const feedTab = document.querySelector('.tab[data-tab="feed"]');
+      if(feedTab) feedTab.click();
+    }
 
     // 1. Save the core entry first — small and fast, this is the part that matters most.
     const logStatus = await attemptSave('log', docId, entry, (success, err)=>{
-      if(success){ showToast('Logged for today ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
-      else{ showErrorBanner(describeFsError(err)); }
+      if(success){ showToast('Logged for today ✓ (it just took a bit longer)', 5000); refreshAfterSave(); goToFeedTab(); }
+      else{ showToast("Couldn't save — see red banner for why"); showErrorBanner(describeFsError(err)); }
     });
 
     // 2. Save photos as their own separate write. If they're too big, drop down
@@ -1042,13 +1048,13 @@ function wireSave(){
       }
       photoStatus = await attemptSave('photos', docId, { photos: attemptPhotos }, (success, err)=>{
         if(success){ showToast('Photos saved ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
-        else{ showErrorBanner('Photos: ' + describeFsError(err)); }
+        else{ showToast("Photos didn't save — see red banner for why"); showErrorBanner('Photos: ' + describeFsError(err)); }
       });
       if(photoStatus === 'failed' && attemptPhotos.length > 1){
         // one more try with just the first photo
         photoStatus = await attemptSave('photos', docId, { photos: [attemptPhotos[0]] }, (success, err)=>{
           if(success){ showToast('Photo saved ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
-          else{ showErrorBanner('Photos: ' + describeFsError(err)); }
+          else{ showToast("Photo didn't save — see red banner for why"); showErrorBanner('Photos: ' + describeFsError(err)); }
         });
         photosDropped = true;
       }
@@ -1063,15 +1069,15 @@ function wireSave(){
       } else if(photoStatus === 'ok'){
         showToast(photosDropped ? "Logged — some photos didn't fit and were left out" : 'Logged for today, photos included');
       } else if(photoStatus === 'pending'){
-        showToast('Logged for today — photos still uploading, hang tight');
+        showToast('Logged for today — photos still uploading, hang tight', 'sticky');
       } else {
         showToast("Logged for today, but photos didn't save — try fewer or smaller ones");
       }
       await renderDayCounterAndSheet();
       await renderWeek();
-      if(document.querySelector('.tab[data-tab="feed"]').classList.contains('active')) renderFeed();
+      goToFeedTab();
     } else if(logStatus === 'pending'){
-      showToast("Still saving — slow connection, hang tight, it'll confirm shortly");
+      showToast("Still saving — slow connection, hang tight, it'll confirm shortly", 'sticky');
     } else {
       const detail = describeFsError(lastFsError);
       showToast("Couldn't save — see red banner for why");
@@ -1081,13 +1087,16 @@ function wireSave(){
 }
 
 let toastHideTimer = null;
+// duration: number of ms to show for, or 'sticky' to stay on screen with no
+// auto-hide at all — used for "still saving" states, so the banner only goes
+// away once the save has genuinely resolved (success or failure), never on a timer.
 function showToast(msg, duration){
-  duration = duration || 2600;
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  if(toastHideTimer) clearTimeout(toastHideTimer);
-  toastHideTimer = setTimeout(()=>t.classList.remove('show'), duration);
+  if(toastHideTimer){ clearTimeout(toastHideTimer); toastHideTimer = null; }
+  if(duration === 'sticky') return;
+  toastHideTimer = setTimeout(()=>t.classList.remove('show'), duration || 2600);
 }
 
 async function renderWeek(){
