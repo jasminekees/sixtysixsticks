@@ -288,6 +288,19 @@
   .comment-form button:hover{background:var(--coral);border-color:var(--coral);}
   .no-photos-note{font-size:0.78rem;color:var(--ink-soft);font-style:italic;}
 
+  /* ---------- Reactions ---------- */
+  .reaction-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+  .reaction-btn{
+    padding:6px 11px;border-radius:999px;border:1.5px solid var(--line);background:#FBF8F0;
+    font-size:0.85rem;color:var(--ink-soft);font-family:'Space Grotesk';display:inline-flex;align-items:center;gap:4px;
+  }
+  .reaction-btn .count{font-family:'Space Mono';font-size:0.72rem;color:var(--ink-soft);}
+  .reaction-btn.mine{border-color:var(--ink);background:var(--pink-light);color:var(--ink);}
+  .reaction-btn.mine .count{color:var(--ink);}
+  .reaction-bar-sm{margin-top:8px;}
+  .reaction-bar-sm .reaction-btn{padding:3px 8px;font-size:0.72rem;background:#fff;}
+  .comment-time{font-size:0.64rem;color:var(--ink-soft);margin-top:5px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;}
+
   @media(max-width:480px){
     .sticker-grid{grid-template-columns:repeat(8,1fr);}
     .title-block h1{font-size:1.7rem;}
@@ -619,6 +632,34 @@ function mondayOf(dateStr){
 function fmtShort(dateStr){
   const d = new Date(dateStr+'T00:00:00');
   return d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+}
+function fmtTime(iso){
+  if(!iso) return '';
+  const d = new Date(iso);
+  if(isNaN(d)) return '';
+  return d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+}
+
+const REACTION_EMOJIS = ['❤️','🔥','👏','💪','😂'];
+function reactionBarHtml(reactions, targetKey, extraClass){
+  reactions = reactions || {};
+  const cls = 'reaction-bar' + (extraClass ? ' ' + extraClass : '');
+  return '<div class="'+cls+'" data-reaction-target="'+escapeAttr(targetKey)+'">' +
+    REACTION_EMOJIS.map(em=>{
+      const list = reactions[em] || [];
+      const mine = list.includes(ME) ? ' mine' : '';
+      const count = list.length;
+      return '<button type="button" class="reaction-btn'+mine+'" data-emoji="'+em+'">'+em+(count?' <span class="count">'+count+'</span>':'')+'</button>';
+    }).join('') +
+    '</div>';
+}
+function toggleReactionInObj(obj, emoji, user){
+  const next = Object.assign({}, obj || {});
+  const list = (next[emoji] || []).slice();
+  const idx = list.indexOf(user);
+  if(idx === -1) list.push(user); else list.splice(idx,1);
+  if(list.length) next[emoji] = list; else delete next[emoji];
+  return next;
 }
 
 function withTimeout(promise, ms){
@@ -1204,22 +1245,33 @@ async function renderFeed(){
       photosHtml = '<div class="post-photos">' + photosDoc.photos.map(p=>'<img src="'+p+'">').join('') + '</div>';
     }
 
+    const postKey = item.user+'__'+item.date;
+    const postReactionsDoc = await fsGet('reactions', postKey);
+    const postReactions = (postReactionsDoc && postReactionsDoc.items) || {};
+    const postReactionBar = reactionBarHtml(postReactions, 'post|'+item.user+'|'+item.date);
+
     const targetKey = escapeAttr(item.user+'|'+item.date);
     const commentsDoc = await fsGet('comments', item.user+'__'+item.date);
     const comments = (commentsDoc && commentsDoc.items) || [];
     let commentsHtml = '<div class="comment-list">';
-    comments.forEach(c=>{
-      commentsHtml += '<div class="comment"><span class="c-author">'+escapeHtml(c.author)+'</span>'+escapeHtml(c.text)+'</div>';
+    comments.forEach((c, idx)=>{
+      const cTargetKey = 'comment|'+item.user+'|'+item.date+'|'+idx;
+      commentsHtml += '<div class="comment">'
+        + '<div><span class="c-author">'+escapeHtml(c.author)+'</span>'+escapeHtml(c.text)+'</div>'
+        + (c.ts ? '<div class="comment-time">'+fmtTime(c.ts)+'</div>' : '')
+        + reactionBarHtml(c.reactions, cTargetKey, 'reaction-bar-sm')
+        + '</div>';
     });
     commentsHtml += '</div>';
 
     html += '<div class="post-card">'
-      + '<div class="post-head"><div class="post-who"><div class="post-avatar">'+escapeHtml(initials)+'</div><div><div class="post-name">'+escapeHtml(item.user)+'</div><div class="post-date">'+fmtShort(item.date)+'</div></div></div><span class="post-day-badge">DAY '+dayNum+'</span></div>'
+      + '<div class="post-head"><div class="post-who"><div class="post-avatar">'+escapeHtml(initials)+'</div><div><div class="post-name">'+escapeHtml(item.user)+'</div><div class="post-date">'+fmtShort(item.date)+(e.loggedAt?' · '+fmtTime(e.loggedAt):'')+'</div></div></div><span class="post-day-badge">DAY '+dayNum+'</span></div>'
       + '<div class="post-badges">'+badges+'</div>'
       + photosHtml
       + exHtml
       + gymNotesHtml
       + (e.notes ? '<div class="post-caption">'+escapeHtml(e.notes)+'</div>' : '')
+      + postReactionBar
       + commentsHtml
       + '<div class="comment-form"><input type="text" placeholder="Leave a comment…" data-comment-input="'+targetKey+'"><button type="button" class="post-comment-btn" data-comment-target="'+targetKey+'">Post</button></div>'
       + '</div>';
@@ -1239,6 +1291,35 @@ async function renderFeed(){
       const comments = (commentsDoc && commentsDoc.items) || [];
       comments.push({ author: ME, text: text, ts: new Date().toISOString() });
       await fsSet('comments', owner+'__'+date, { items: comments });
+      renderFeed();
+    };
+  });
+
+  container.querySelectorAll('.reaction-btn').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const bar = btn.closest('[data-reaction-target]');
+      if(!bar) return;
+      const parts = bar.dataset.reactionTarget.split('|');
+      const type = parts[0];
+      const emoji = btn.dataset.emoji;
+      btn.disabled = true;
+      if(type === 'post'){
+        const owner = parts[1], date = parts[2];
+        const key = owner+'__'+date;
+        const doc = await fsGet('reactions', key);
+        const current = (doc && doc.items) || {};
+        const next = toggleReactionInObj(current, emoji, ME);
+        await fsSet('reactions', key, { items: next });
+      } else if(type === 'comment'){
+        const owner = parts[1], date = parts[2], idx = parseInt(parts[3],10);
+        const key = owner+'__'+date;
+        const commentsDoc = await fsGet('comments', key);
+        const comments = (commentsDoc && commentsDoc.items) || [];
+        if(comments[idx]){
+          comments[idx].reactions = toggleReactionInObj(comments[idx].reactions, emoji, ME);
+          await fsSet('comments', key, { items: comments });
+        }
+      }
       renderFeed();
     };
   });
