@@ -61,7 +61,7 @@
   .onb-card .eyebrow{font-family:'Space Mono';font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:8px;}
   .onb-card h1{font-size:2rem;letter-spacing:-0.01em;}
   .onb-card p{color:var(--ink-soft);font-size:0.92rem;line-height:1.5;margin:12px 0 22px;}
-  .onb-card input[type=text], .onb-card input[type=date]{
+  .onb-card input[type=text], .onb-card input[type=date], .onb-card input[type=email]{
     width:100%;padding:12px 14px;border-radius:10px;border:2px solid var(--ink);
     font-family:'Space Grotesk';font-size:1rem;color:var(--ink);margin-bottom:14px;background:#FFFDF9;
   }
@@ -95,6 +95,50 @@
   .whoami-row{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--ink-soft);margin-bottom:18px;font-weight:500;}
   .whoami-row .pill{background:var(--paper);border:2px solid var(--ink);border-radius:8px;padding:3px 10px;font-weight:700;color:var(--ink);}
   .switch-link{color:var(--coral-ink);text-decoration:underline;cursor:pointer;font-weight:700;background:none;border:none;font-family:'Space Grotesk';font-size:0.78rem;padding:0;}
+
+  /* ---------- Profile ---------- */
+  .profile-nav-btn{
+    width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:var(--ink);color:#fff;
+    padding:0;cursor:pointer;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk';font-weight:700;font-size:0.85rem;
+  }
+  .profile-nav-btn img{width:100%;height:100%;object-fit:cover;}
+  .avatar-photo{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
+  .profile-card{text-align:left;max-width:400px;max-height:88vh;overflow-y:auto;position:relative;}
+  .profile-modal-close{
+    position:absolute;top:14px;right:14px;background:none;border:none;cursor:pointer;
+    font-size:1rem;color:var(--ink-soft);padding:4px;line-height:1;
+  }
+  .profile-modal-close:hover{color:var(--coral-ink);}
+  .profile-photo-picker{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .profile-photo-circle{
+    width:64px;height:64px;border-radius:50%;background:var(--ink);color:#fff;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;
+    font-size:1.3rem;border:2px solid var(--ink);overflow:hidden;
+  }
+  .profile-card textarea{width:100%;margin-bottom:16px;min-height:70px;}
+  .profile-card label{display:block;font-size:0.75rem;color:var(--ink-soft);margin:0 2px 6px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;}
+
+  /* ---------- Milestones ---------- */
+  #milestone-overlay .unlock-card{max-width:320px;}
+
+  /* ---------- Streak ---------- */
+  .sheet-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;}
+  .sheet-card-head h3{margin-bottom:0;}
+
+  /* ---------- Edit a past day ---------- */
+  .edit-date-row{margin:-6px 0 16px;}
+  .edit-date-picker-inline{display:none;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;}
+  .edit-date-picker-inline.show{display:flex;}
+  .edit-date-picker-inline input[type=date]{
+    padding:8px 10px;border-radius:8px;border:2px solid var(--ink);font-family:'Space Grotesk';
+    font-size:0.85rem;color:var(--ink);background:#FFFDF9;
+  }
+  .editing-banner{
+    background:var(--mustard-light);border:1.5px solid var(--line);border-radius:8px;
+    padding:9px 13px;font-size:0.8rem;color:var(--ink);margin-bottom:16px;font-weight:600;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
 
   /* ---------- Tabs ---------- */
   .tabs{display:flex;gap:0;margin-bottom:22px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;}
@@ -220,6 +264,51 @@
   .track .marker{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:0.5;}
   .goal-note{font-size:0.74rem;color:var(--ink-soft);margin-top:6px;font-weight:500;}
 
+  /* ---------- Weekly rewards ---------- */
+  .rewards-sub{font-size:0.78rem;color:var(--ink-soft);margin-bottom:14px;line-height:1.4;}
+  .reward-empty{font-size:0.82rem;color:var(--ink-soft);font-style:italic;margin-bottom:12px;}
+  .reward-row{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+    border:1.5px solid var(--line);background:#FBF8F0;margin-bottom:8px;
+  }
+  .reward-row.unlocked{background:var(--mustard-light);border-color:var(--mustard-ink);}
+  .reward-icon{font-size:1.05rem;flex-shrink:0;}
+  .reward-name{flex:1;font-size:0.86rem;font-weight:600;color:var(--ink);min-width:0;overflow-wrap:anywhere;}
+  .reward-row.unlocked .reward-name{color:var(--mustard-ink);}
+  .reward-tag{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;color:var(--ink-soft);flex-shrink:0;}
+  .reward-row.unlocked .reward-tag{color:var(--mustard-ink);}
+  .reward-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:0.9rem;padding:2px 4px;flex-shrink:0;}
+  .reward-del:hover{color:var(--coral-ink);}
+  .reward-add-row{display:flex;gap:8px;margin-top:2px;}
+  .reward-add-row input{
+    flex:1;border:2px solid var(--ink);border-radius:8px;padding:9px 15px;font-family:'Space Grotesk';
+    font-size:0.85rem;background:#FBF8F0;color:var(--ink);min-width:0;
+  }
+  .reward-add-row input:focus{outline:none;border-color:var(--coral);}
+  .reward-add-row button{
+    padding:9px 18px;background:var(--ink);color:#fff;font-size:0.82rem;border:2px solid var(--ink);border-radius:8px;flex-shrink:0;
+  }
+  .reward-add-row button:hover{background:var(--coral);border-color:var(--coral);}
+
+  .unlock-overlay{
+    position:fixed;inset:0;background:rgba(21,21,21,0.55);display:flex;align-items:center;justify-content:center;
+    z-index:999;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s ease;
+  }
+  .unlock-overlay.show{opacity:1;pointer-events:auto;}
+  .unlock-card{
+    background:var(--paper);border-radius:var(--radius);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);
+    padding:34px 26px;max-width:340px;width:100%;text-align:center;transform:scale(0.85);transition:transform .25s ease;
+  }
+  .unlock-overlay.show .unlock-card{transform:scale(1);}
+  .unlock-emoji{font-size:2.8rem;margin-bottom:10px;}
+  .unlock-title{font-family:'Space Mono';font-size:0.72rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--mustard-ink);font-weight:700;margin-bottom:8px;}
+  .unlock-name{font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:22px;line-height:1.3;}
+  .unlock-close{
+    padding:11px 26px;background:var(--ink);color:#fff;font-size:0.9rem;border:2px solid var(--ink);border-radius:8px;
+    font-family:'Space Grotesk';font-weight:600;cursor:pointer;
+  }
+  .unlock-close:hover{background:var(--coral);border-color:var(--coral);}
+
   .mood-strip{display:flex;gap:6px;margin-top:6px;}
   .mood-day{flex:1;text-align:center;}
   .mood-day .d{font-size:0.62rem;color:var(--ink-soft);margin-bottom:4px;font-weight:700;text-transform:uppercase;}
@@ -263,8 +352,10 @@
   .post-avatar{
     width:36px;height:36px;border-radius:8px;background:var(--ink);
     color:#fff;font-family:'Space Grotesk';font-weight:700;display:flex;align-items:center;justify-content:center;font-size:0.95rem;
+    overflow:hidden;flex-shrink:0;
   }
   .post-name{font-weight:700;font-size:0.95rem;}
+  .post-action-line{font-size:0.85rem;color:var(--ink-soft);font-weight:600;margin-bottom:10px;}
   .post-date{font-size:0.7rem;color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:0.03em;}
   .post-day-badge{font-family:'Space Mono';font-size:0.7rem;background:var(--ink);color:#fff;padding:4px 10px;border-radius:6px;font-weight:700;}
   .post-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
@@ -418,10 +509,38 @@ service cloud.firestore {
 
 
 <div id="onboarding">
-  <div class="onb-card">
+  <div class="onb-card" id="onb-step-email">
     <div class="eyebrow">Day 1 of 66</div>
     <h1>Sixty-Six Sticks</h1>
     <p>A shared tracker for habits that actually stick — no self-sabotage if you slip, just back on it tomorrow.</p>
+    <label>Email address</label>
+    <input type="email" id="onb-email" placeholder="you@email.com" autocomplete="email">
+    <div class="onb-error" id="onb-email-error">Enter a valid email address</div>
+    <button class="btn-main" id="onb-send-link">Send me a sign-in link</button>
+    <div class="fine">No password — we'll email you a one-time link to sign in. Only approved accounts can get in.</div>
+  </div>
+
+  <div class="onb-card" id="onb-step-sent" style="display:none;">
+    <div class="eyebrow">Check your inbox</div>
+    <h1>Link sent ✉️</h1>
+    <p>We sent a sign-in link to <strong id="onb-sent-email">—</strong>. Open it on this device to continue — it only works once.</p>
+    <button class="switch-link" id="onb-use-different-email">Use a different email</button>
+  </div>
+
+  <div class="onb-card" id="onb-step-confirm" style="display:none;">
+    <div class="eyebrow">Almost there</div>
+    <h1>Confirm your email</h1>
+    <p>Looks like you opened this link on a different browser or device than you sent it from — just confirm the email it was sent to.</p>
+    <label>Email address</label>
+    <input type="email" id="onb-confirm-email" placeholder="you@email.com" autocomplete="email">
+    <div class="onb-error" id="onb-confirm-error">Enter the email the link was sent to</div>
+    <button class="btn-main" id="onb-confirm-btn">Confirm and sign in</button>
+  </div>
+
+  <div class="onb-card" id="onb-step-name" style="display:none;">
+    <div class="eyebrow">Welcome</div>
+    <h1>What should we call you?</h1>
+    <p>This is the name that shows up on your posts. You'll only set this once — it's tied to your account from here on.</p>
     <label>Name</label>
     <input type="text" id="onb-name" placeholder="Your name" maxlength="20">
     <div class="onb-error" id="onb-error">Type your name first</div>
@@ -430,7 +549,6 @@ service cloud.firestore {
       <input type="date" id="onb-startdate">
     </div>
     <button class="btn-main" id="onb-continue">Start</button>
-    <div class="fine">This file uses a shared database once connected — anyone with the file (and your Firebase config) can see logged entries.</div>
   </div>
 </div>
 
@@ -447,8 +565,9 @@ service cloud.firestore {
   </header>
 
   <div class="whoami-row">
+    <button type="button" class="profile-nav-btn" id="profile-nav-btn" aria-label="Your profile"><span id="profile-nav-avatar">–</span></button>
     logged in as <span class="pill" id="whoami-pill">–</span>
-    <button class="switch-link" id="switch-who">not you?</button>
+    <button class="switch-link" id="sign-out-btn">Sign out</button>
   </div>
 
   <div class="tabs">
@@ -461,13 +580,23 @@ service cloud.firestore {
   <!-- TODAY -->
   <div class="panel active" id="panel-today">
     <div class="sheet-card">
-      <h3>Progress</h3>
+      <div class="sheet-card-head">
+        <h3>Progress</h3>
+        <span class="streak-badge" id="my-streak-badge">🔥 –</span>
+      </div>
       <div class="sheet-sub">a block fills in on days you hit steps, gym-or-rest-as-planned, eating goal, and reading</div>
       <div class="sticker-grid" id="sticker-grid"></div>
     </div>
 
     <div class="card">
       <h3 id="today-heading">Log today</h3>
+      <div class="edit-date-row">
+        <button type="button" class="switch-link" id="edit-past-link">Edit a different day</button>
+        <div class="edit-date-picker-inline" id="edit-date-picker">
+          <input type="date" id="in-edit-date">
+          <button type="button" class="switch-link" id="back-to-today-link">Back to today</button>
+        </div>
+      </div>
 
       <div class="field">
         <div class="field-label"><span class="ico">🚶</span> Steps</div>
@@ -511,6 +640,26 @@ service cloud.firestore {
         <div class="chip-row">
           <button class="chip" data-group="eating" data-val="clean">Ate for fuel</button>
           <button class="chip" data-group="eating" data-val="treat">Ate for joy</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span class="ico">🍷</span> Alcohol</div>
+        <div class="chip-row">
+          <button class="chip" data-group="drink" data-val="none">None</button>
+          <button class="chip" data-group="drink" data-val="light">1–2 drinks</button>
+          <button class="chip" data-group="drink" data-val="heavy">3+ drinks</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span class="ico">☕</span> Caffeine (shots)</div>
+        <div class="chip-row">
+          <button class="chip" data-group="caffeine" data-val="0">0</button>
+          <button class="chip" data-group="caffeine" data-val="1">1</button>
+          <button class="chip" data-group="caffeine" data-val="2">2</button>
+          <button class="chip" data-group="caffeine" data-val="3">3</button>
+          <button class="chip" data-group="caffeine" data-val="4+">4+</button>
         </div>
       </div>
 
@@ -574,9 +723,25 @@ service cloud.firestore {
         <div class="track"><div class="fill" id="steps-avg-track" style="background:var(--mustard);"></div></div>
       </div>
 
-      <div class="goal-block" style="margin-bottom:0;">
+      <div class="goal-block">
         <div class="goal-head"><span class="label">Reading nights</span><span class="count num" id="read-count">0 / 7</span></div>
         <div class="track"><div class="fill" id="read-track" style="background:var(--pink);"></div></div>
+      </div>
+
+      <div class="goal-block" style="margin-bottom:0;">
+        <div class="goal-head"><span class="label">Avg caffeine / day</span><span class="count num" id="caffeine-avg">0</span></div>
+        <div class="track"><div class="fill" id="caffeine-avg-track" style="background:var(--coral);"></div></div>
+        <div class="goal-note">shots per day, averaged across logged days</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎁 Weekly rewards</h3>
+      <div class="rewards-sub">Hit gym 3+, ate-for-fuel 4+, and your steps goal in one week to unlock the next one on your list.</div>
+      <div id="rewards-list"></div>
+      <div class="reward-add-row">
+        <input type="text" id="in-reward-name" placeholder="Add a reward — new running headphones, a massage…">
+        <button type="button" id="add-reward-btn">Add</button>
       </div>
     </div>
 
@@ -599,8 +764,47 @@ service cloud.firestore {
 
 <div class="toast" id="toast"></div>
 
+<div class="unlock-overlay" id="unlock-overlay">
+  <div class="unlock-card">
+    <div class="unlock-emoji">🎉</div>
+    <div class="unlock-title">Reward unlocked</div>
+    <div class="unlock-name" id="unlock-name">—</div>
+    <button type="button" class="unlock-close" id="unlock-close">Nice!</button>
+  </div>
+</div>
+
+<div class="unlock-overlay" id="milestone-overlay">
+  <div class="unlock-card">
+    <div class="unlock-emoji" id="milestone-emoji">🎉</div>
+    <div class="unlock-title">Milestone</div>
+    <div class="unlock-name" id="milestone-text">—</div>
+    <button type="button" class="unlock-close" id="milestone-close">Keep going</button>
+  </div>
+</div>
+
+<div class="unlock-overlay" id="profile-overlay">
+  <div class="unlock-card profile-card">
+    <button type="button" class="profile-modal-close" id="profile-modal-close" aria-label="Close">✕</button>
+    <div class="unlock-title" id="profile-modal-title">Your profile</div>
+    <p id="profile-modal-sub" style="color:var(--ink-soft);font-size:0.85rem;line-height:1.5;margin:0 0 18px;"></p>
+    <div class="profile-photo-picker">
+      <div class="profile-photo-circle" id="profile-photo-circle">–</div>
+      <div>
+        <input type="file" id="profile-photo-input" accept="image/*" style="display:none;">
+        <button type="button" class="switch-link" id="profile-photo-btn">Add / change photo</button>
+      </div>
+    </div>
+    <label>Your goals for these 66 days</label>
+    <textarea id="profile-goals" placeholder="e.g. build a consistent gym habit, feel stronger, sleep better…"></textarea>
+    <label>Why does this matter to you?</label>
+    <textarea id="profile-why" placeholder="What's underneath the goal — why now?"></textarea>
+    <button class="btn-main" id="profile-save-btn">Save</button>
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script>
 
 function showErrorBanner(msg){
@@ -625,23 +829,39 @@ const firebaseConfig = {
 const NEEDS_SETUP = Object.values(firebaseConfig).some(v => String(v).includes('PASTE_YOUR_FIREBASE_CONFIG_HERE'));
 
 let db = null;
+let auth = null;
 if(!NEEDS_SETUP){
   try{
     firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
     db.settings({ experimentalAutoDetectLongPolling: true, merge: true });
+    auth = firebase.auth();
   }catch(err){
     console.error('Firebase init failed', err);
   }
 }
 
+// Always send magic links back to the real live site, never wherever this
+// page happens to be opened from — a local file:// path isn't a valid
+// redirect target and causes Firebase's auth/invalid-continue-uri error.
+const LIVE_APP_URL = 'https://jasminekees.github.io/sixtysixsticks/';
+
 const ROOT = 'our66'; // top-level collection namespace, matches the Firestore rules
 const START_KEY = 'meta:start-date';
 const CHALLENGE_DAYS = 66;
 let ME = null;
-let selections = { gym:null, gymtype:null, eating:null, read:null, mood:null };
+let selections = { gym:null, gymtype:null, eating:null, drink:null, caffeine:null, read:null, mood:null };
 let exerciseRowCount = 0;
 let pendingPhotos = [];
+let editingDate = null; // null = today; otherwise a 'YYYY-MM-DD' being edited
+let pendingProfilePhoto = null;
+let profileModalOnDone = null;
+const MILESTONES = {
+  10: { emoji:'🌱', text:"Day 10 — the habit's starting to take root." },
+  33: { emoji:'🏔️', text:"Day 33 — halfway there. You've made it further than most people ever try." },
+  50: { emoji:'⭐', text:'Day 50 — the finish line is properly in sight now.' },
+  66: { emoji:'🏁', text:"Day 66 — you did it. That's the whole 66." }
+};
 const MAX_PHOTOS = 4;
 const PERSON_COLORS = ['sage','blush','lavender','sky','butter'];
 
@@ -675,6 +895,64 @@ function fmtTime(iso){
   const d = new Date(iso);
   if(isNaN(d)) return '';
   return d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+}
+
+// Returns inner HTML for an avatar circle/square: a photo if the profile has
+// one, otherwise the person's initial (same fallback the app always used).
+function avatarInnerHtml(name, profile){
+  if(profile && profile.photo) return '<img class="avatar-photo" src="'+profile.photo+'">';
+  const initial = (name||'').trim().charAt(0).toUpperCase();
+  return escapeHtml(initial || '?');
+}
+
+// Consecutive-day streak. Counts backward from today; if today isn't logged
+// yet, still starts from yesterday so a live streak doesn't look broken
+// before the day is even over.
+function computeStreakFromDates(dateSet){
+  const today = todayStr();
+  const start = dateSet.has(today) ? 0 : 1;
+  let streak = 0;
+  for(let i=start; ; i++){
+    const d = addDays(today, -i);
+    if(dateSet.has(d)) streak++;
+    else break;
+  }
+  return streak;
+}
+
+async function renderMyStreak(){
+  const el = document.getElementById('my-streak-badge');
+  if(!el) return;
+  const items = await fsListKind('log');
+  if(items === null) return;
+  const dateSet = new Set();
+  items.forEach(it=>{
+    const sep = it.id.indexOf('__');
+    if(it.id.slice(0,sep) === ME) dateSet.add(it.id.slice(sep+2));
+  });
+  const streak = computeStreakFromDates(dateSet);
+  el.textContent = streak > 0 ? '🔥 '+streak+'-day streak' : '🔥 Log today to start a streak';
+}
+
+// Shows a one-time celebration overlay the first time a device sees a given
+// milestone day for the current person. Keyed by person so two people
+// sharing a browser (or a reused test name) don't share the flag.
+function checkMilestone(dayNum){
+  const m = MILESTONES[dayNum];
+  if(!m) return;
+  const key = 'our66_milestone_'+dayNum+'_'+ME;
+  if(localStorage.getItem(key)) return;
+  localStorage.setItem(key, '1');
+  document.getElementById('milestone-emoji').textContent = m.emoji;
+  document.getElementById('milestone-text').textContent = m.text;
+  document.getElementById('milestone-overlay').classList.add('show');
+}
+
+async function renderNavAvatar(){
+  const el = document.getElementById('profile-nav-avatar');
+  if(!el) return;
+  const profile = await fsGet('profile', ME);
+  el.innerHTML = avatarInnerHtml(ME, profile);
 }
 
 const HEART_PATH = 'M12 21s-6.9-4.35-9.7-8.485C.6 9.847 1.13 6.5 3.55 4.914 5.8 3.44 8.5 4.03 10 5.5L12 7.5l2-2c1.5-1.47 4.2-2.06 6.45-.586 2.42 1.586 2.95 4.933.75 7.601C18.9 16.65 12 21 12 21z';
@@ -797,80 +1075,204 @@ async function fsListKind(kind){
 
 function logDocId(user, date){ return user+'__'+date; }
 
+let pendingAccountEmail = null;
+
+function showOnbStep(id){
+  document.querySelectorAll('#onboarding .onb-card').forEach(c=> c.style.display='none');
+  const el = document.getElementById(id);
+  if(el) el.style.display = 'block';
+  document.getElementById('onboarding').style.display = 'flex';
+}
+
+// Completes a magic-link sign-in once we know which email it was sent to
+// (either remembered from this device, or confirmed by hand).
+async function completeSignInWithLink(email){
+  try{
+    await auth.signInWithEmailLink(email, window.location.href);
+    localStorage.removeItem('our66_pending_email');
+    window.history.replaceState({}, document.title, window.location.pathname);
+    // onAuthStateChanged (wired in init) picks up from here automatically.
+  }catch(err){
+    console.error('Magic link sign-in failed', err);
+    showOnbStep('onb-step-email');
+    const errEl = document.getElementById('onb-email-error');
+    errEl.textContent = "That link didn't work — it may have expired or already been used. Try sending a new one.";
+    errEl.classList.add('show');
+  }
+}
+
+// Runs once we have a confirmed, signed-in Firebase user. Looks up whether
+// this email already has a display name on file; if not, this is the
+// account's first-ever sign-in, so ask for one before entering the app.
+async function enterWithUser(user){
+  const email = (user.email || '').toLowerCase();
+  const account = await fsGet('account', email);
+  if(account && account.name){
+    ME = account.name;
+    document.getElementById('onboarding').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    boot();
+    fsGet('meta', 'config').then(async (meta)=>{
+      if(!meta || !meta.startDate){
+        await fsSet('meta', 'config', { startDate: todayStr() });
+      }
+      renderDayCounterAndSheet();
+    }).catch(()=>{});
+  } else {
+    pendingAccountEmail = email;
+    showOnbStep('onb-step-name');
+    fsGet('meta', 'config').then(meta=>{
+      if(!meta || !meta.startDate){
+        document.getElementById('onb-startdate-wrap').style.display = 'block';
+        document.getElementById('onb-startdate').value = todayStr();
+      }
+    }).catch(()=>{});
+  }
+}
+
+function wireSignIn(){
+  document.getElementById('onb-send-link').onclick = async ()=>{
+    const input = document.getElementById('onb-email');
+    const email = input.value.trim().toLowerCase();
+    const errEl = document.getElementById('onb-email-error');
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      errEl.textContent = 'Enter a valid email address';
+      errEl.classList.add('show');
+      input.style.borderColor = 'var(--coral)';
+      input.focus();
+      return;
+    }
+    errEl.classList.remove('show');
+    input.style.borderColor = '';
+
+    const btn = document.getElementById('onb-send-link');
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = 'Sending…';
+
+    const actionCodeSettings = {
+      url: LIVE_APP_URL,
+      handleCodeInApp: true
+    };
+    try{
+      await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+      localStorage.setItem('our66_pending_email', email);
+      document.getElementById('onb-sent-email').textContent = email;
+      showOnbStep('onb-step-sent');
+    }catch(err){
+      console.error('sendSignInLinkToEmail failed', err);
+      errEl.textContent = describeFsError(err);
+      errEl.classList.add('show');
+    }
+    btn.disabled = false;
+    btn.textContent = label;
+  };
+
+  document.getElementById('onb-use-different-email').onclick = ()=>{
+    localStorage.removeItem('our66_pending_email');
+    document.getElementById('onb-email').value = '';
+    showOnbStep('onb-step-email');
+  };
+
+  document.getElementById('onb-confirm-btn').onclick = async ()=>{
+    const input = document.getElementById('onb-confirm-email');
+    const email = input.value.trim().toLowerCase();
+    const errEl = document.getElementById('onb-confirm-error');
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      errEl.classList.add('show');
+      input.focus();
+      return;
+    }
+    errEl.classList.remove('show');
+    const btn = document.getElementById('onb-confirm-btn');
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = 'Confirming…';
+    await completeSignInWithLink(email);
+    btn.disabled = false;
+    btn.textContent = label;
+  };
+
+  // Wired immediately, never gated behind a network call, so a slow or
+  // failed connection can't leave Start doing nothing.
+  document.getElementById('onb-continue').onclick = async ()=>{
+    const nameInput = document.getElementById('onb-name');
+    const name = nameInput.value.trim();
+    if(!name){
+      document.getElementById('onb-error').classList.add('show');
+      nameInput.style.borderColor = 'var(--coral)';
+      nameInput.focus();
+      return;
+    }
+    document.getElementById('onb-error').classList.remove('show');
+
+    const btn = document.getElementById('onb-continue');
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = 'Starting…';
+
+    const email = pendingAccountEmail || (auth.currentUser && auth.currentUser.email.toLowerCase());
+    await fsSet('account', email, { name: name, createdAt: new Date().toISOString() });
+
+    const meta = await fsGet('meta', 'config');
+    if(!meta || !meta.startDate){
+      const sd = document.getElementById('onb-startdate').value || todayStr();
+      await fsSet('meta', 'config', { startDate: sd });
+    }
+    ME = name;
+
+    btn.disabled = false;
+    btn.textContent = label;
+
+    document.getElementById('onboarding').style.display = 'none';
+    openProfileModal(true, ()=>{
+      document.getElementById('app').style.display = 'block';
+      boot();
+    });
+  };
+
+  document.getElementById('sign-out-btn').onclick = async ()=>{
+    try{ await auth.signOut(); }catch(err){ console.error('sign out failed', err); }
+    ME = null;
+    location.reload();
+  };
+}
+
 async function init(){
   if(NEEDS_SETUP){
     document.getElementById('setup-screen').classList.add('show');
     return;
   }
-
-  ME = localStorage.getItem('our66_whoami') || null;
-
-  if(!ME){
-    document.getElementById('onboarding').style.display='flex';
-
-    // Wire the button immediately — never gate this behind a network call,
-    // so a slow or failed connection can't leave Start doing nothing.
-    document.getElementById('onb-continue').onclick = async ()=>{
-      const nameInput = document.getElementById('onb-name');
-      const name = nameInput.value.trim();
-      if(!name){
-        document.getElementById('onb-error').classList.add('show');
-        nameInput.style.borderColor = 'var(--coral)';
-        nameInput.focus();
-        return;
-      }
-      document.getElementById('onb-error').classList.remove('show');
-
-      const btn = document.getElementById('onb-continue');
-      btn.disabled = true;
-      const label = btn.textContent;
-      btn.textContent = 'Starting…';
-
-      localStorage.setItem('our66_whoami', name);
-      const meta = await fsGet('meta', 'config');
-      if(!meta || !meta.startDate){
-        const sd = document.getElementById('onb-startdate').value || todayStr();
-        await fsSet('meta', 'config', { startDate: sd });
-      }
-      ME = name;
-
-      btn.disabled = false;
-      btn.textContent = label;
-
-      document.getElementById('onboarding').style.display='none';
-      document.getElementById('app').style.display='block';
-      boot();
-    };
-
-    // Non-blocking: reveal the "Day 1 starts" date field only if no one has started yet.
-    fsGet('meta', 'config').then(meta=>{
-      if(!meta || !meta.startDate){
-        document.getElementById('onb-startdate-wrap').style.display='block';
-        document.getElementById('onb-startdate').value = todayStr();
-      }
-    }).catch(()=>{});
-
+  if(!auth){
+    document.getElementById('setup-screen').classList.add('show');
     return;
   }
 
-  // Returning user — show the app immediately, never gate this behind the network.
-  document.getElementById('onboarding').style.display='none';
-  document.getElementById('app').style.display='block';
-  boot();
+  // Wire the profile modal immediately — it can open before boot() ever runs
+  // (during first-time account setup), so it can't be gated behind boot().
+  wireProfileModal();
+  wireSignIn();
 
-  // Non-blocking: make sure a start date exists, then refresh the counter once known.
-  fsGet('meta', 'config').then(async (meta)=>{
-    if(!meta || !meta.startDate){
-      await fsSet('meta', 'config', { startDate: todayStr() });
+  auth.onAuthStateChanged(async (user)=>{
+    if(user){
+      await enterWithUser(user);
+    } else if(!auth.isSignInWithEmailLink(window.location.href)){
+      showOnbStep('onb-step-email');
     }
-    renderDayCounterAndSheet();
-  }).catch(()=>{});
-}
+  });
 
-document.getElementById('switch-who').onclick = ()=>{
-  localStorage.removeItem('our66_whoami');
-  location.reload();
-};
+  // If this load *is* the magic link being opened, complete the sign-in —
+  // either automatically (same device that requested it) or by asking to
+  // confirm the email (opened somewhere else, e.g. a different browser).
+  if(auth.isSignInWithEmailLink(window.location.href)){
+    const rememberedEmail = localStorage.getItem('our66_pending_email');
+    if(rememberedEmail){
+      await completeSignInWithLink(rememberedEmail);
+    } else {
+      showOnbStep('onb-step-confirm');
+    }
+  }
+}
 
 async function boot(){
   document.getElementById('whoami-pill').textContent = ME;
@@ -879,9 +1281,16 @@ async function boot(){
   wireExercises();
   wirePhotos();
   wireSave();
+  wireRewardAdd();
+  wireUnlockModal();
+  wireProfileModal();
+  wireDateEditor();
   try{ await renderDayCounterAndSheet(); } catch(err){ console.error('renderDayCounterAndSheet failed', err); }
   try{ await renderTodayForm(); } catch(err){ console.error('renderTodayForm failed', err); }
   try{ await renderWeek(); } catch(err){ console.error('renderWeek failed', err); }
+  try{ await renderRewards(); } catch(err){ console.error('renderRewards failed', err); }
+  renderNavAvatar();
+  renderMyStreak();
 }
 
 function wireTabs(){
@@ -892,7 +1301,7 @@ function wireTabs(){
       t.classList.add('active');
       document.getElementById('panel-'+t.dataset.tab).classList.add('active');
       if(t.dataset.tab==='us') renderUs();
-      if(t.dataset.tab==='week') renderWeek();
+      if(t.dataset.tab==='week'){ renderWeek(); renderRewards(); }
       if(t.dataset.tab==='feed') renderFeed();
     };
   });
@@ -904,6 +1313,7 @@ async function renderDayCounterAndSheet(){
   const today = todayStr();
   const idx = dayIndex(startDate, today) + 1;
   document.getElementById('day-counter').textContent = Math.max(1, Math.min(idx, CHALLENGE_DAYS));
+  checkMilestone(idx);
 
   const grid = document.getElementById('sticker-grid');
   grid.innerHTML='';
@@ -952,6 +1362,16 @@ function wireForm(){
         colorChip(btn, btn.dataset.val==='yes' ? 'sky' : 'blush');
       } else if(group==='gymtype'){ selections.gymtype = btn.dataset.val; colorChip(btn,'sky'); }
       else if(group==='eating'){ selections.eating = btn.dataset.val; colorChip(btn, btn.dataset.val==='clean'?'sage':'blush'); }
+      else if(group==='drink'){
+        selections.drink = btn.dataset.val;
+        const map = {none:'sage', light:'butter', heavy:'blush'};
+        colorChip(btn, map[btn.dataset.val]);
+      }
+      else if(group==='caffeine'){
+        selections.caffeine = btn.dataset.val;
+        const map = {'0':'sage','1':'butter','2':'butter','3':'blush','4+':'blush'};
+        colorChip(btn, map[btn.dataset.val]);
+      }
       else if(group==='read'){
         selections.read = btn.dataset.val;
         const map = {nonfiction:'lavender', fiction:'butter', no:'blush'};
@@ -1066,11 +1486,42 @@ function wirePhotos(){
   };
 }
 
+// Clears every field in the log form back to blank, so switching which day
+// you're editing never leaves a stale value from a previous day showing.
+function resetTodayForm(){
+  document.getElementById('in-steps').value = '';
+  updateStepsBar();
+  document.querySelectorAll('.chip[data-group], .mood-btn[data-group]').forEach(b=>{
+    b.classList.remove('selected','c-sage','c-blush','c-lav','c-sky','c-butter');
+    b.style.background = '';
+    b.style.color = '';
+  });
+  const gymExtra = document.getElementById('gym-extra');
+  if(gymExtra) gymExtra.classList.remove('show');
+  document.getElementById('exercise-list').innerHTML = '';
+  document.getElementById('in-gym-notes').value = '';
+  document.getElementById('in-notes').value = '';
+  selections = { gym:null, gymtype:null, eating:null, drink:null, caffeine:null, read:null, mood:null };
+  pendingPhotos = [];
+  renderPhotoGrid();
+}
+
 async function renderTodayForm(){
-  const today = todayStr();
-  document.getElementById('today-heading').textContent = 'Log today · '+fmtShort(today);
-  const e = await fsGet('log', logDocId(ME, today));
-  const photosDoc = await fsGet('photos', logDocId(ME, today));
+  const date = editingDate || todayStr();
+  const isToday = date === todayStr();
+  resetTodayForm();
+
+  if(isToday){
+    document.getElementById('today-heading').textContent = 'Log today · '+fmtShort(date);
+  } else {
+    const meta = await fsGet('meta', 'config');
+    const startDate = (meta && meta.startDate) || todayStr();
+    const dayNum = dayIndex(startDate, date) + 1;
+    document.getElementById('today-heading').textContent = 'Editing Day '+dayNum+' · '+fmtShort(date);
+  }
+
+  const e = await fsGet('log', logDocId(ME, date));
+  const photosDoc = await fsGet('photos', logDocId(ME, date));
   if(photosDoc && photosDoc.photos && photosDoc.photos.length){
     pendingPhotos = photosDoc.photos.slice();
     renderPhotoGrid();
@@ -1086,15 +1537,52 @@ async function renderTodayForm(){
     }
     if(e.gymNotes) document.getElementById('in-gym-notes').value = e.gymNotes;
     if(e.eating){ const b=document.querySelector('[data-group="eating"][data-val="'+e.eating+'"]'); if(b) b.click(); }
+    if(e.drink){ const b=document.querySelector('[data-group="drink"][data-val="'+e.drink+'"]'); if(b) b.click(); }
+    if(e.caffeine){ const b=document.querySelector('[data-group="caffeine"][data-val="'+e.caffeine+'"]'); if(b) b.click(); }
     if(e.read){ const b=document.querySelector('[data-group="read"][data-val="'+e.read+'"]'); if(b) b.click(); }
     if(e.mood){ const b=document.querySelector('[data-group="mood"][data-val="'+e.mood+'"]'); if(b) b.click(); }
     if(e.notes) document.getElementById('in-notes').value = e.notes;
   }catch(err){}
 }
 
+// Lets someone log or fix an earlier day instead of just today — handy for
+// catching up on a forgotten entry, without ever touching another day by accident.
+function wireDateEditor(){
+  const link = document.getElementById('edit-past-link');
+  const picker = document.getElementById('edit-date-picker');
+  const dateInput = document.getElementById('in-edit-date');
+  const backLink = document.getElementById('back-to-today-link');
+  if(!link) return;
+
+  link.onclick = async ()=>{
+    const meta = await fsGet('meta', 'config');
+    const startDate = (meta && meta.startDate) || todayStr();
+    dateInput.min = startDate;
+    dateInput.max = todayStr();
+    dateInput.value = editingDate || todayStr();
+    picker.classList.add('show');
+    link.style.display = 'none';
+  };
+  backLink.onclick = ()=>{
+    editingDate = null;
+    picker.classList.remove('show');
+    link.style.display = 'inline';
+    renderTodayForm();
+  };
+  dateInput.onchange = ()=>{
+    if(!dateInput.value) return;
+    editingDate = dateInput.value === todayStr() ? null : dateInput.value;
+    renderTodayForm();
+  };
+}
+
 function wireSave(){
   document.getElementById('save-log').onclick = async ()=>{
-    const today = todayStr();
+    const today = editingDate || todayStr();
+    // True only when this save came through "Edit a different day" for a date
+    // that isn't today — lets the Feed say "edited" instead of "completed",
+    // so a backdated fix doesn't read like a fresh same-day post.
+    const wasEdited = !!editingDate;
     const photos = pendingPhotos.slice();
     const entry = {
       steps: parseInt(document.getElementById('in-steps').value)||0,
@@ -1103,10 +1591,13 @@ function wireSave(){
       exercises: selections.gym==='yes' ? collectExercises() : [],
       gymNotes: selections.gym==='yes' ? document.getElementById('in-gym-notes').value.trim() : '',
       eating: selections.eating,
+      drink: selections.drink,
+      caffeine: selections.caffeine,
       read: selections.read,
       mood: selections.mood,
       notes: document.getElementById('in-notes').value.trim(),
-      loggedAt: new Date().toISOString()
+      loggedAt: new Date().toISOString(),
+      wasEdited: wasEdited
     };
 
     const btn = document.getElementById('save-log');
@@ -1119,6 +1610,7 @@ function wireSave(){
     function refreshAfterSave(){
       renderDayCounterAndSheet();
       renderWeek();
+      renderMyStreak();
       if(document.querySelector('.tab[data-tab="feed"]').classList.contains('active')) renderFeed();
     }
     // Jumps straight to the Feed tab and renders it, so the person can see
@@ -1130,6 +1622,7 @@ function wireSave(){
 
     // 1. Save the core entry first — small and fast, this is the part that matters most.
     const logStatus = await attemptSave('log', docId, entry, (success, err)=>{
+      clearStallWarning();
       if(success){ showToast('Logged for today ✓ (it just took a bit longer)', 5000); refreshAfterSave(); goToFeedTab(); }
       else{ showToast("Couldn't save — see red banner for why"); showErrorBanner(describeFsError(err)); }
     });
@@ -1147,12 +1640,14 @@ function wireSave(){
         photosDropped = true;
       }
       photoStatus = await attemptSave('photos', docId, { photos: attemptPhotos }, (success, err)=>{
+        clearStallWarning();
         if(success){ showToast('Photos saved ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
         else{ showToast("Photos didn't save — see red banner for why"); showErrorBanner('Photos: ' + describeFsError(err)); }
       });
       if(photoStatus === 'failed' && attemptPhotos.length > 1){
         // one more try with just the first photo
         photoStatus = await attemptSave('photos', docId, { photos: [attemptPhotos[0]] }, (success, err)=>{
+          clearStallWarning();
           if(success){ showToast('Photo saved ✓ (it just took a bit longer)', 5000); refreshAfterSave(); }
           else{ showToast("Photo didn't save — see red banner for why"); showErrorBanner('Photos: ' + describeFsError(err)); }
         });
@@ -1169,15 +1664,22 @@ function wireSave(){
       } else if(photoStatus === 'ok'){
         showToast(photosDropped ? "Logged — some photos didn't fit and were left out" : 'Logged for today, photos included');
       } else if(photoStatus === 'pending'){
-        showToast('Logged for today — photos still uploading, hang tight', 'sticky');
+        showStickySave(
+          'Logged for today — photos still uploading, hang tight',
+          "Photos are taking a while to upload — your day is already logged safely, it's just the photos stuck. Worth checking your connection."
+        );
       } else {
         showToast("Logged for today, but photos didn't save — try fewer or smaller ones");
       }
       await renderDayCounterAndSheet();
       await renderWeek();
+      renderMyStreak();
       goToFeedTab();
     } else if(logStatus === 'pending'){
-      showToast("Still saving — slow connection, hang tight, it'll confirm shortly", 'sticky');
+      showStickySave(
+        "Still saving — slow connection, hang tight, it'll confirm shortly",
+        "Still trying to save — this is taking longer than usual. Worth checking you're online."
+      );
     } else {
       const detail = describeFsError(lastFsError);
       showToast("Couldn't save — see red banner for why");
@@ -1199,12 +1701,26 @@ function showToast(msg, duration){
   toastHideTimer = setTimeout(()=>t.classList.remove('show'), duration || 2600);
 }
 
+// A sticky toast that, if it's still sitting there unresolved after a genuinely
+// long stretch, swaps to a message saying so instead of staying silent forever —
+// call clearStallWarning() the moment the save actually resolves either way.
+let stallWarningTimer = null;
+function showStickySave(msg, stallMsg){
+  showToast(msg, 'sticky');
+  clearTimeout(stallWarningTimer);
+  stallWarningTimer = setTimeout(()=> showToast(stallMsg, 'sticky'), 45000);
+}
+function clearStallWarning(){
+  clearTimeout(stallWarningTimer);
+  stallWarningTimer = null;
+}
+
 async function renderWeek(){
   const today = todayStr();
   const monday = mondayOf(today);
   document.getElementById('week-range').textContent = fmtShort(monday)+' – '+fmtShort(addDays(monday,6));
 
-  let gymCount=0, eatCount=0, readCount=0, stepsSum=0, stepsDays=0;
+  let gymCount=0, eatCount=0, readCount=0, stepsSum=0, stepsDays=0, caffeineSum=0, caffeineDays=0;
   const moodStrip = document.getElementById('mood-strip');
   moodStrip.innerHTML='';
   const dayLabels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -1219,6 +1735,7 @@ async function renderWeek(){
       if(e.eating==='clean') eatCount++;
       if(e.read==='nonfiction' || e.read==='fiction') readCount++;
       if(e.steps){ stepsSum+=e.steps; stepsDays++; }
+      if(e.caffeine){ caffeineSum += (e.caffeine==='4+' ? 4 : parseInt(e.caffeine)||0); caffeineDays++; }
       mood = e.mood;
     }
     const cell = document.createElement('div');
@@ -1234,9 +1751,175 @@ async function renderWeek(){
   document.getElementById('eat-track').style.width = Math.min(100,(eatCount/4)*100)+'%';
   document.getElementById('read-count').textContent = readCount+' / 7';
   document.getElementById('read-track').style.width = Math.min(100,(readCount/7)*100)+'%';
+  const caffeineAvg = caffeineDays ? Math.round((caffeineSum/caffeineDays)*10)/10 : 0;
+  document.getElementById('caffeine-avg').textContent = caffeineAvg;
+  document.getElementById('caffeine-avg-track').style.width = Math.min(100,(caffeineAvg/6)*100)+'%';
   const avg = stepsDays ? Math.round(stepsSum/stepsDays) : 0;
   document.getElementById('steps-avg').textContent = avg.toLocaleString();
   document.getElementById('steps-avg-track').style.width = Math.min(100,(avg/12500)*100)+'%';
+
+  checkWeeklyReward(gymCount, eatCount, avg, monday);
+}
+
+/* ---------- Weekly rewards ---------- */
+async function renderRewards(){
+  const container = document.getElementById('rewards-list');
+  if(!container) return;
+  const doc = await fsGet('rewards', ME);
+  const items = (doc && doc.items) || [];
+  if(!items.length){
+    container.innerHTML = '<div class="reward-empty">No rewards yet — add something you\'d love to earn for hitting your goals.</div>';
+    return;
+  }
+  container.innerHTML = items.map((r,idx)=>{
+    const unlocked = !!r.unlockedOn;
+    return '<div class="reward-row'+(unlocked?' unlocked':'')+'">'
+      + '<span class="reward-icon">'+(unlocked?'🎉':'🔒')+'</span>'
+      + '<span class="reward-name">'+escapeHtml(r.name)+'</span>'
+      + '<span class="reward-tag">'+(unlocked?'unlocked':'locked')+'</span>'
+      + '<button type="button" class="reward-del" data-reward-idx="'+idx+'" aria-label="Remove reward">✕</button>'
+      + '</div>';
+  }).join('');
+  container.querySelectorAll('.reward-del').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const idx = parseInt(btn.dataset.rewardIdx,10);
+      const doc2 = await fsGet('rewards', ME);
+      const items2 = (doc2 && doc2.items) || [];
+      items2.splice(idx,1);
+      await fsSet('rewards', ME, Object.assign({}, doc2, { items: items2 }));
+      renderRewards();
+    };
+  });
+}
+
+function wireRewardAdd(){
+  const btn = document.getElementById('add-reward-btn');
+  if(!btn) return;
+  btn.onclick = async ()=>{
+    const input = document.getElementById('in-reward-name');
+    const name = input.value.trim();
+    if(!name) return;
+    btn.disabled = true;
+    const doc = await fsGet('rewards', ME);
+    const items = (doc && doc.items) || [];
+    items.push({ name: name, unlockedOn: null });
+    await fsSet('rewards', ME, Object.assign({}, doc, { items: items }));
+    input.value = '';
+    btn.disabled = false;
+    renderRewards();
+  };
+  const input = document.getElementById('in-reward-name');
+  if(input) input.addEventListener('keydown', e=>{ if(e.key==='Enter') btn.click(); });
+}
+
+// Called every time the week's stats are computed. Unlocks the next un-claimed
+// reward the first time this week's goals (gym 3+, fuel 4+, steps avg 10k+) are
+// met — each calendar week (by Monday date) can only claim one reward, ever.
+async function checkWeeklyReward(gymCount, eatCount, avgSteps, weekKey){
+  const goalsMet = gymCount>=3 && eatCount>=4 && avgSteps>=10000;
+  if(!goalsMet) return;
+  const doc = await fsGet('rewards', ME);
+  const items = (doc && doc.items) || [];
+  const claimedWeeks = (doc && doc.claimedWeeks) || [];
+  if(claimedWeeks.includes(weekKey)) return;
+  const nextIdx = items.findIndex(r=>!r.unlockedOn);
+  if(nextIdx === -1) return; // nothing left to unlock, or no rewards added yet
+  items[nextIdx].unlockedOn = weekKey;
+  claimedWeeks.push(weekKey);
+  await fsSet('rewards', ME, Object.assign({}, doc, { items: items, claimedWeeks: claimedWeeks }));
+  showRewardUnlock(items[nextIdx].name);
+  renderRewards();
+}
+
+function showRewardUnlock(name){
+  const overlay = document.getElementById('unlock-overlay');
+  if(!overlay) return;
+  document.getElementById('unlock-name').textContent = name;
+  overlay.classList.add('show');
+}
+
+function wireUnlockModal(){
+  const closeBtn = document.getElementById('unlock-close');
+  if(closeBtn) closeBtn.onclick = ()=>{
+    document.getElementById('unlock-overlay').classList.remove('show');
+  };
+  const milestoneCloseBtn = document.getElementById('milestone-close');
+  if(milestoneCloseBtn) milestoneCloseBtn.onclick = ()=>{
+    document.getElementById('milestone-overlay').classList.remove('show');
+  };
+}
+
+// Opens the profile modal. `required` hides the close button and swaps in
+// welcome copy — used the first time someone sets up their account, since
+// there's nothing to cancel back to yet. `onDone` (optional) fires once the
+// profile is saved, used to continue into the app right after first setup.
+async function openProfileModal(required, onDone){
+  profileModalOnDone = onDone || null;
+  const closeBtn = document.getElementById('profile-modal-close');
+  closeBtn.style.display = required ? 'none' : 'inline-block';
+  document.getElementById('profile-modal-title').textContent = required ? 'Welcome — quick intro' : 'Your profile';
+  document.getElementById('profile-modal-sub').textContent = required
+    ? "Just a couple of things so this feels like yours — you can update these anytime from the profile icon up top."
+    : "Update your photo and goals any time — this is all just for you (and Olivia can see it too, same as everything else here).";
+
+  const profile = await fsGet('profile', ME) || {};
+  document.getElementById('profile-goals').value = profile.goals || '';
+  document.getElementById('profile-why').value = profile.why || '';
+  pendingProfilePhoto = profile.photo || null;
+  document.getElementById('profile-photo-circle').innerHTML = avatarInnerHtml(ME, profile);
+
+  document.getElementById('profile-overlay').classList.add('show');
+}
+
+function wireProfileModal(){
+  const navBtn = document.getElementById('profile-nav-btn');
+  if(navBtn) navBtn.onclick = ()=> openProfileModal(false, null);
+
+  const closeBtn = document.getElementById('profile-modal-close');
+  if(closeBtn) closeBtn.onclick = ()=>{
+    document.getElementById('profile-overlay').classList.remove('show');
+  };
+
+  const photoBtn = document.getElementById('profile-photo-btn');
+  const photoInput = document.getElementById('profile-photo-input');
+  if(photoBtn) photoBtn.onclick = ()=> photoInput.click();
+  if(photoInput) photoInput.onchange = async (e)=>{
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    try{
+      pendingProfilePhoto = await resizeImage(file, 320, 0.6);
+      document.getElementById('profile-photo-circle').innerHTML = '<img class="avatar-photo" src="'+pendingProfilePhoto+'">';
+    }catch(err){ console.error('profile photo resize failed', err); }
+    e.target.value = '';
+  };
+
+  const saveBtn = document.getElementById('profile-save-btn');
+  if(saveBtn) saveBtn.onclick = async ()=>{
+    saveBtn.disabled = true;
+    const label = saveBtn.textContent;
+    saveBtn.textContent = 'Saving…';
+    const data = {
+      photo: pendingProfilePhoto || null,
+      goals: document.getElementById('profile-goals').value.trim(),
+      why: document.getElementById('profile-why').value.trim(),
+      updatedAt: new Date().toISOString()
+    };
+    const ok = await fsSet('profile', ME, data);
+    saveBtn.disabled = false;
+    saveBtn.textContent = label;
+    if(!ok){
+      showToast("Couldn't save — see red banner for why");
+      showErrorBanner(describeFsError(lastFsError));
+      return;
+    }
+    document.getElementById('profile-overlay').classList.remove('show');
+    renderNavAvatar();
+    if(profileModalOnDone){
+      const cb = profileModalOnDone;
+      profileModalOnDone = null;
+      cb();
+    }
+  };
 }
 
 async function renderFeed(){
@@ -1270,11 +1953,27 @@ async function renderFeed(){
   const startDate = (meta && meta.startDate) || todayStr();
   const emojiMap = {'1':'😩','2':'😕','3':'😐','4':'🙂','5':'🥰'};
 
+  // Fetch every post's photos/reactions/comments in parallel rather than one
+  // at a time — on a slow connection, doing this sequentially for 20 posts
+  // (3 reads each) could take minutes; in parallel it's as slow as the single
+  // slowest read.
+  const extras = await Promise.all(top.map(item=>{
+    const key = item.user+'__'+item.date;
+    return Promise.all([
+      fsGet('photos', key),
+      fsGet('reactions', key),
+      fsGet('comments', key),
+      fsGet('profile', item.user)
+    ]);
+  }));
+
   let html = '';
-  for(const item of top){
+  for(let i=0;i<top.length;i++){
+    const item = top[i];
+    const [photosDoc, postReactionsDoc, commentsDoc, profileDoc] = extras[i];
     const e = item.data;
     const dayNum = dayIndex(startDate, item.date) + 1;
-    const initials = item.user.trim().charAt(0).toUpperCase();
+    const avatarHtml = avatarInnerHtml(item.user, profileDoc);
 
     let badges = '';
     if(e.steps) badges += '<span class="post-badge">'+e.steps.toLocaleString()+' steps</span>';
@@ -1282,8 +1981,14 @@ async function renderFeed(){
     else if(e.gym==='no') badges += '<span class="post-badge">rest day</span>';
     if(e.eating==='clean') badges += '<span class="post-badge">ate for fuel</span>';
     else if(e.eating==='treat') badges += '<span class="post-badge">ate for joy</span>';
+    if(e.drink==='light') badges += '<span class="post-badge">🍷 1–2 drinks</span>';
+    else if(e.drink==='heavy') badges += '<span class="post-badge">🍷 3+ drinks</span>';
     if(e.read==='nonfiction') badges += '<span class="post-badge">read nonfiction</span>';
     else if(e.read==='fiction') badges += '<span class="post-badge">read fiction</span>';
+    if(e.caffeine){
+      const shotWord = e.caffeine==='1' ? 'shot' : 'shots';
+      badges += '<span class="post-badge">☕ '+e.caffeine+' '+shotWord+'</span>';
+    }
     if(e.mood) badges += '<span class="post-badge">'+emojiMap[e.mood]+'</span>';
 
     let exHtml = '';
@@ -1302,7 +2007,6 @@ async function renderFeed(){
     }
 
     let photosHtml = '';
-    const photosDoc = await fsGet('photos', item.user+'__'+item.date);
     if(photosDoc && photosDoc.photos && photosDoc.photos.length){
       photosHtml = '<div class="post-photos">' + photosDoc.photos.map(p=>
         '<div class="post-photo-wrap" data-photo-like-target="'+escapeAttr('post|'+item.user+'|'+item.date)+'">'
@@ -1312,13 +2016,10 @@ async function renderFeed(){
       ).join('') + '</div>';
     }
 
-    const postKey = item.user+'__'+item.date;
-    const postReactionsDoc = await fsGet('reactions', postKey);
     const postReactions = (postReactionsDoc && postReactionsDoc.items) || {};
     const postTargetKey = 'post|'+item.user+'|'+item.date;
 
     const targetKey = escapeAttr(item.user+'|'+item.date);
-    const commentsDoc = await fsGet('comments', item.user+'__'+item.date);
     const comments = (commentsDoc && commentsDoc.items) || [];
     let commentsHtml = '<div class="comment-list">';
     comments.forEach((c, idx)=>{
@@ -1338,8 +2039,13 @@ async function renderFeed(){
       ? '<button type="button" class="post-delete-btn" data-delete-target="'+escapeAttr(item.user+'|'+item.date)+'" title="Delete post" aria-label="Delete post"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m2 0-1 13a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2L7 7"/></svg></button>'
       : '';
 
+    const actionLine = e.wasEdited
+      ? escapeHtml(item.user)+' edited Day '+dayNum
+      : escapeHtml(item.user)+' completed their Day '+dayNum;
+
     html += '<div class="post-card">'
-      + '<div class="post-head"><div class="post-who"><div class="post-avatar">'+escapeHtml(initials)+'</div><div><div class="post-name">'+escapeHtml(item.user)+'</div><div class="post-date">'+fmtShort(item.date)+(e.loggedAt?' · '+fmtTime(e.loggedAt):'')+'</div></div></div><div class="post-head-right"><span class="post-day-badge">DAY '+dayNum+'</span>'+deleteBtnHtml+'</div></div>'
+      + '<div class="post-head"><div class="post-who"><div class="post-avatar">'+avatarHtml+'</div><div><div class="post-name">'+escapeHtml(item.user)+'</div><div class="post-date">'+fmtShort(item.date)+(e.loggedAt?' · '+fmtTime(e.loggedAt):'')+'</div></div></div><div class="post-head-right"><span class="post-day-badge">DAY '+dayNum+'</span>'+deleteBtnHtml+'</div></div>'
+      + '<div class="post-action-line">'+actionLine+'</div>'
       + '<div class="post-badges">'+badges+'</div>'
       + photosHtml
       + exHtml
@@ -1485,28 +2191,30 @@ async function renderUs(){
 
   const today = todayStr();
   const monday = mondayOf(today);
+  const users = Object.keys(byUser);
+  const profiles = await Promise.all(users.map(u=> fsGet('profile', u)));
+  const profileMap = {};
+  users.forEach((u,i)=> profileMap[u] = profiles[i]);
+
   let html = '';
   let colorIdx = 0;
-  for(const user of Object.keys(byUser)){
+  for(const user of users){
     colorIdx++;
     const entries = byUser[user].sort((a,b)=> b.date.localeCompare(a.date));
-    let streak=0, lastDate=null, lastNote=null, gymW=0, eatW=0;
-    let cursor = today;
-    for(let i=0;i<30;i++){
-      const dateStr = addDays(cursor, -i);
-      const found = entries.find(e=>e.date===dateStr);
-      if(found){
-        if(!lastDate){ lastDate = dateStr; lastNote = found.data.notes || null; }
-        if(dateStr >= monday){
-          if(found.data.gym==='yes') gymW++;
-          if(found.data.eating==='clean') eatW++;
-        }
-        if(i===streak) streak++;
+    const dateSet = new Set(entries.map(e=>e.date));
+    const streak = computeStreakFromDates(dateSet);
+    const lastDate = entries.length ? entries[0].date : null;
+    const lastNote = entries.length ? (entries[0].data.notes || null) : null;
+    let gymW=0, eatW=0;
+    entries.forEach(e=>{
+      if(e.date >= monday){
+        if(e.data.gym==='yes') gymW++;
+        if(e.data.eating==='clean') eatW++;
       }
-    }
+    });
     const pClass = colorIdx===1?'p1':(colorIdx===2?'p2':'');
     html += '<div class="card person-card '+pClass+'">'
-      + '<div class="person-head"><h3>'+escapeHtml(user)+(user===ME?' (you)':'')+'</h3>'
+      + '<div class="person-head"><div class="post-avatar" style="margin-right:10px;">'+avatarInnerHtml(user, profileMap[user])+'</div><h3 style="flex:1;">'+escapeHtml(user)+(user===ME?' (you)':'')+'</h3>'
       + '<span class="streak-badge">'+streak+' day streak</span></div>'
       + '<div class="stat-row">'
       + '<div class="stat"><div class="v">'+gymW+'/4</div><div class="l">gym this wk</div></div>'
