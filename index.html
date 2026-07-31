@@ -390,6 +390,13 @@
     border:2px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;flex-shrink:0;
   }
   .follow-btn.following{background:transparent;color:var(--ink);}
+  .follow-btn:disabled{opacity:0.6;cursor:default;}
+  .request-accept, .request-decline{
+    font-family:'Space Grotesk';font-size:0.75rem;font-weight:700;padding:6px 14px;border-radius:999px;
+    cursor:pointer;flex-shrink:0;
+  }
+  .request-accept{border:2px solid var(--teal);background:var(--teal);color:#fff;}
+  .request-decline{border:2px solid var(--line);background:transparent;color:var(--ink-soft);}
 
   /* ---------- Leaderboard (Us tab) ---------- */
   .leaderboard{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
@@ -2356,6 +2363,14 @@ async function getFollowing(){
   return [ME];
 }
 
+// Usernames who've asked to follow you and are waiting on your approval.
+// Following someone else never lets them see your posts by itself — they
+// only get added to *their own* following list once you accept.
+async function getFollowRequests(){
+  const doc = await fsGet('followRequests', ME);
+  return (doc && Array.isArray(doc.pending)) ? doc.pending : [];
+}
+
 async function renderFeed(){
   const following = await getFollowing();
   await renderPostsInto('feed-content', following, "No posts yet from people you follow — check the Us tab to follow someone, or log today to post your own.");
@@ -2384,10 +2399,11 @@ async function renderUs(){
   const container = document.getElementById('us-content');
   container.innerHTML = '<div class="loading-line">gathering everyone\'s data…</div>';
 
-  const [items, accounts, myFollowing] = await Promise.all([
+  const [items, accounts, myFollowing, myRequests] = await Promise.all([
     fsListKind('log'),
     fsListKind('account'),
-    getFollowing()
+    getFollowing(),
+    getFollowRequests()
   ]);
 
   if(items === null){
@@ -2432,8 +2448,25 @@ async function renderUs(){
   const profileMap = {};
   board.forEach((b,i)=> profileMap[b.user] = profiles[i]);
 
+  let html = '';
+
+  // Incoming follow requests — needs your explicit accept before that person
+  // can see your posts. Shown above everything else so it's hard to miss.
+  if(myRequests.length){
+    html += '<div class="card"><h3>Follow requests</h3>';
+    myRequests.forEach(name=>{
+      html += '<div class="find-person-row">'
+        + '<span>'+escapeHtml(name)+'</span>'
+        + '<div style="display:flex;gap:8px;">'
+        + '<button type="button" class="request-accept" data-requester="'+escapeAttr(name)+'">Accept</button>'
+        + '<button type="button" class="request-decline" data-requester="'+escapeAttr(name)+'">Decline</button>'
+        + '</div></div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="leaderboard">';
   const medals = ['🥇','🥈','🥉'];
-  let html = '<div class="leaderboard">';
   if(!board.length){
     html += '<div class="reward-empty">You\'re not following anyone yet — find people below.</div>';
   }
@@ -2464,9 +2497,15 @@ async function renderUs(){
     : [];
 
   if(others.length){
-    html += '<div class="card"><h3>Find people</h3><div class="rewards-sub">Follow someone to see their posts in your Feed and leaderboard.</div>';
-    others.forEach(name=>{
-      html += '<div class="find-person-row"><span>'+escapeHtml(name)+'</span><button type="button" class="follow-btn" data-follow-target="'+escapeAttr(name)+'">Follow</button></div>';
+    // Need to know, per candidate, whether THEY already have a pending
+    // request from ME, so the button can say "Requested" instead of "Follow".
+    const theirRequestDocs = await Promise.all(others.map(name=> fsGet('followRequests', name)));
+    html += '<div class="card"><h3>Find people</h3><div class="rewards-sub">Send a follow request — they\'ll need to accept before you see their posts.</div>';
+    others.forEach((name, i)=>{
+      const theirPending = (theirRequestDocs[i] && theirRequestDocs[i].pending) || [];
+      const alreadyRequested = theirPending.includes(ME);
+      html += '<div class="find-person-row"><span>'+escapeHtml(name)+'</span>'
+        + '<button type="button" class="follow-btn'+(alreadyRequested?' following':'')+'" data-follow-target="'+escapeAttr(name)+'"'+(alreadyRequested?' disabled':'')+'>'+(alreadyRequested?'Requested':'Follow')+'</button></div>';
     });
     html += '</div>';
   }
@@ -2477,9 +2516,50 @@ async function renderUs(){
     btn.onclick = async ()=>{
       const target = btn.dataset.followTarget;
       btn.disabled = true;
-      const following = await getFollowing();
-      if(!following.includes(target)) following.push(target);
-      const ok = await fsSet('follows', ME, { following: following });
+      const reqDoc = await fsGet('followRequests', target);
+      const pending = (reqDoc && reqDoc.pending) || [];
+      if(!pending.includes(ME)) pending.push(ME);
+      const ok = await fsSet('followRequests', target, { pending: pending });
+      if(!ok){
+        showToast("Couldn't send request — see red banner for why");
+        showErrorBanner(describeFsError(lastFsError));
+        btn.disabled = false;
+        return;
+      }
+      showToast('Follow request sent to '+target);
+      renderUs();
+    };
+  });
+
+  container.querySelectorAll('.request-accept').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const requester = btn.dataset.requester;
+      btn.disabled = true;
+      const reqDoc = await fsGet('followRequests', ME);
+      const pending = ((reqDoc && reqDoc.pending) || []).filter(n=> n!==requester);
+      const ok1 = await fsSet('followRequests', ME, { pending: pending });
+      const theirFollows = await fsGet('follows', requester);
+      const following = ((theirFollows && theirFollows.following) || [requester]).slice();
+      if(!following.includes(ME)) following.push(ME);
+      const ok2 = await fsSet('follows', requester, { following: following });
+      if(!ok1 || !ok2){
+        showToast("Couldn't accept — see red banner for why");
+        showErrorBanner(describeFsError(lastFsError));
+        btn.disabled = false;
+        return;
+      }
+      showToast(requester+' can now see your posts');
+      renderUs();
+    };
+  });
+
+  container.querySelectorAll('.request-decline').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const requester = btn.dataset.requester;
+      btn.disabled = true;
+      const reqDoc = await fsGet('followRequests', ME);
+      const pending = ((reqDoc && reqDoc.pending) || []).filter(n=> n!==requester);
+      const ok = await fsSet('followRequests', ME, { pending: pending });
       if(!ok){
         showToast("Couldn't update — see red banner for why");
         showErrorBanner(describeFsError(lastFsError));
