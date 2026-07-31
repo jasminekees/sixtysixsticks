@@ -61,7 +61,7 @@
   .onb-card .eyebrow{font-family:'Space Mono';font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:8px;}
   .onb-card h1{font-size:2rem;letter-spacing:-0.01em;}
   .onb-card p{color:var(--ink-soft);font-size:0.92rem;line-height:1.5;margin:12px 0 22px;}
-  .onb-card input[type=text], .onb-card input[type=date], .onb-card input[type=email]{
+  .onb-card input[type=text], .onb-card input[type=date], .onb-card input[type=email], .onb-card input[type=password]{
     width:100%;padding:12px 14px;border-radius:10px;border:2px solid var(--ink);
     font-family:'Space Grotesk';font-size:1rem;color:var(--ink);margin-bottom:14px;background:#FFFDF9;
   }
@@ -111,6 +111,7 @@
   }
   .profile-modal-close:hover{color:var(--coral-ink);}
   .profile-photo-picker{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .profile-photo-actions{display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
   .profile-photo-circle{
     width:64px;height:64px;border-radius:50%;background:var(--ink);color:#fff;flex-shrink:0;
     display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;
@@ -207,14 +208,21 @@
   .gym-types{margin-bottom:16px;}
 
   .exercise-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+  .cardio-km-field{margin-bottom:12px;}
+  .cardio-km-field label{display:block;font-size:0.75rem;color:var(--ink-soft);margin:0 0 6px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+  .cardio-km-field input{
+    width:100%;padding:10px 12px;border-radius:8px;border:2px solid var(--ink);
+    font-family:'Space Grotesk';font-size:0.9rem;color:var(--ink);background:#FFFDF9;
+  }
+  .cardio-km-field input:focus{outline:none;border-color:var(--coral);}
   .exercise-row{background:#FBF8F0;border:2px solid var(--line);border-radius:8px;padding:8px 8px;}
-  .exercise-row-top{display:grid;grid-template-columns:2fr 0.8fr 0.8fr auto;gap:6px;align-items:center;}
+  .exercise-row-top{display:grid;grid-template-columns:1.8fr 0.65fr 0.65fr 0.7fr auto;gap:6px;align-items:center;}
   .exercise-row input{
     border:none;background:transparent;font-family:'Space Grotesk';font-size:0.85rem;color:var(--ink);
     padding:6px 4px;min-width:0;
   }
   .exercise-row input:focus{outline:none;}
-  .exercise-row input.ex-sets, .exercise-row input.ex-reps{text-align:center;font-family:'Space Mono';}
+  .exercise-row input.ex-sets, .exercise-row input.ex-reps, .exercise-row input.ex-weight{text-align:center;font-family:'Space Mono';}
   .ex-note{
     width:100%;margin-top:4px;padding-top:6px;border-top:1.5px dashed var(--line);
     font-size:0.8rem;font-style:italic;
@@ -229,11 +237,19 @@
   }
   .gym-notes-label{font-size:0.8rem;font-weight:700;margin:14px 0 8px;color:var(--ink);text-transform:uppercase;letter-spacing:0.02em;}
 
-  .mood-row{display:flex;gap:8px;justify-content:space-between;}
+  .mood-row{display:grid;grid-template-columns:repeat(6, 1fr);gap:6px;}
   .mood-btn{
-    flex:1;padding:10px 0;border-radius:10px;border:2px solid var(--ink);background:var(--paper);font-size:1.4rem;
+    padding:9px 0;border-radius:10px;border:2px solid var(--ink);background:var(--paper);font-size:1.25rem;
   }
   .mood-btn.selected{border-color:var(--pink);background:var(--pink-light);}
+
+  .field-label-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .field-label-row .field-label{margin-bottom:0;}
+  .privacy-toggle{
+    font-family:'Space Grotesk';font-size:0.7rem;font-weight:700;padding:5px 10px;border-radius:999px;
+    border:1.5px solid var(--line);background:#FBF8F0;color:var(--ink-soft);cursor:pointer;flex-shrink:0;white-space:nowrap;
+  }
+  .privacy-toggle[data-private="true"]{border-color:var(--ink);background:var(--ink);color:#fff;}
 
   textarea{
     width:100%;min-height:80px;padding:12px 14px;border-radius:10px;border:2px solid var(--ink);
@@ -279,9 +295,13 @@
   .reward-row.unlocked .reward-tag{color:var(--mustard-ink);}
   .reward-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:0.9rem;padding:2px 4px;flex-shrink:0;}
   .reward-del:hover{color:var(--coral-ink);}
-  .reward-add-row{display:flex;gap:8px;margin-top:2px;}
+  .reward-buy-link{
+    font-family:'Space Grotesk';font-size:0.72rem;font-weight:700;color:var(--mustard-ink);
+    text-decoration:underline;flex-shrink:0;white-space:nowrap;
+  }
+  .reward-add-row{display:flex;flex-direction:column;gap:8px;margin-top:2px;}
   .reward-add-row input{
-    flex:1;border:2px solid var(--ink);border-radius:8px;padding:9px 15px;font-family:'Space Grotesk';
+    width:100%;border:2px solid var(--ink);border-radius:8px;padding:9px 15px;font-family:'Space Grotesk';
     font-size:0.85rem;background:#FBF8F0;color:var(--ink);min-width:0;
   }
   .reward-add-row input:focus{outline:none;border-color:var(--coral);}
@@ -308,6 +328,11 @@
     font-family:'Space Grotesk';font-weight:600;cursor:pointer;
   }
   .unlock-close:hover{background:var(--coral);border-color:var(--coral);}
+  .unlock-buy-btn{
+    padding:11px 26px;background:var(--mustard-ink);color:#fff;font-size:0.9rem;border:2px solid var(--mustard-ink);border-radius:8px;
+    font-family:'Space Grotesk';font-weight:700;cursor:pointer;text-decoration:none;margin-bottom:10px;
+  }
+  .unlock-buy-btn:hover{opacity:0.9;}
 
   .mood-strip{display:flex;gap:6px;margin-top:6px;}
   .mood-day{flex:1;text-align:center;}
@@ -318,7 +343,7 @@
   .person-card{border-left:6px solid var(--pink);}
   .person-card.p1{border-left-color:var(--cobalt);}
   .person-card.p2{border-left-color:var(--coral);}
-  .person-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .person-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
   .person-head h3{font-size:1.2rem;}
   .streak-badge{font-family:'Space Mono';font-size:0.78rem;background:var(--ink);color:#fff;padding:5px 12px;border-radius:8px;font-weight:700;}
   .stat-row{display:flex;gap:10px;margin-bottom:14px;}
@@ -346,20 +371,67 @@
   .photo-hint{font-size:0.72rem;color:var(--ink-soft);margin-top:8px;font-weight:500;}
 
   /* ---------- Feed ---------- */
-  .post-card{background:var(--paper);border-radius:var(--radius);padding:20px;margin-bottom:16px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
-  .post-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .post-card{
+    background:var(--paper);border-radius:var(--radius);padding:22px;margin-bottom:20px;
+    border:2px solid var(--ink);border-left-width:6px;border-left-color:var(--accent-color, var(--ink));
+    box-shadow:6px 6px 0 var(--ink);
+  }
+  .post-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
   .post-who{display:flex;align-items:center;gap:10px;}
   .post-avatar{
     width:36px;height:36px;border-radius:8px;background:var(--ink);
     color:#fff;font-family:'Space Grotesk';font-weight:700;display:flex;align-items:center;justify-content:center;font-size:0.95rem;
     overflow:hidden;flex-shrink:0;
   }
-  .post-name{font-weight:700;font-size:0.95rem;}
-  .post-action-line{font-size:0.85rem;color:var(--ink-soft);font-weight:600;margin-bottom:10px;}
-  .post-date{font-size:0.7rem;color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:0.03em;}
+
+  /* ---------- Follow ---------- */
+  .follow-btn{
+    font-family:'Space Grotesk';font-size:0.75rem;font-weight:700;padding:6px 14px;border-radius:999px;
+    border:2px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;flex-shrink:0;
+  }
+  .follow-btn.following{background:transparent;color:var(--ink);}
+
+  /* ---------- Leaderboard (Us tab) ---------- */
+  .leaderboard{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+  .leaderboard-row{
+    display:flex;align-items:center;gap:10px;background:var(--paper);border-radius:var(--radius);
+    padding:14px 16px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
+  }
+  .leaderboard-row.me{background:var(--pink-light);}
+  .lb-rank{font-family:'Space Mono';font-size:1.1rem;font-weight:700;width:32px;flex-shrink:0;text-align:center;}
+  .lb-info{flex:1;min-width:0;}
+  .lb-name{font-weight:700;font-size:0.95rem;}
+  .lb-sub{font-size:0.72rem;color:var(--ink-soft);font-weight:600;margin-top:2px;}
+  .lb-unfollow{
+    background:none;border:none;color:var(--coral-ink);text-decoration:underline;font-size:0.7rem;
+    font-family:'Space Grotesk';font-weight:700;cursor:pointer;padding:4px 0 0;
+  }
+  .lb-streak{text-align:center;flex-shrink:0;}
+  .lb-streak-num{font-family:'Space Mono';font-size:1.4rem;font-weight:700;color:var(--coral-ink);line-height:1;}
+  .lb-streak-label{font-size:0.6rem;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-top:2px;}
+  .find-person-row{
+    display:flex;align-items:center;justify-content:space-between;padding:10px 0;
+    border-bottom:1.5px solid var(--line);font-size:0.88rem;font-weight:600;
+  }
+  .find-person-row:last-child{border-bottom:none;}
+
+  /* ---------- Profile tab ---------- */
+  .profile-tab-card{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+  .profile-tab-avatar{
+    width:60px;height:60px;border-radius:50%;background:var(--ink);color:#fff;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;
+    font-size:1.3rem;border:2px solid var(--ink);overflow:hidden;
+  }
+  .profile-tab-name{font-size:1.15rem;font-weight:700;margin-bottom:2px;}
+  .profile-tab-edit{font-size:0.78rem;}
+  .profile-tab-bio{font-size:0.85rem;color:var(--ink-soft);line-height:1.5;margin-bottom:6px;}
+  .profile-tab-bio strong{color:var(--ink);font-weight:700;}
+  .post-name{font-weight:700;font-size:1rem;letter-spacing:-0.01em;}
+  .post-action-line{font-size:0.83rem;color:var(--ink-soft);font-weight:600;margin-bottom:12px;font-style:italic;}
+  .post-date{font-size:0.68rem;color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-top:1px;}
   .post-day-badge{font-family:'Space Mono';font-size:0.7rem;background:var(--ink);color:#fff;padding:4px 10px;border-radius:6px;font-weight:700;}
-  .post-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-  .post-badge{font-size:0.74rem;font-weight:700;padding:5px 11px;border-radius:999px;background:#FBF8F0;border:1.5px solid var(--line);color:var(--ink-soft);}
+  .post-badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+  .post-badge{font-size:0.73rem;font-weight:700;padding:5px 12px;border-radius:999px;background:#FBF8F0;border:1.5px solid var(--line);color:var(--ink-soft);}
   .post-photos{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px;}
   .post-photo-wrap{position:relative;flex-shrink:0;}
   .post-photos img{width:130px;height:130px;object-fit:cover;border-radius:10px;flex-shrink:0;border:2px solid var(--ink);display:block;}
@@ -376,9 +448,13 @@
     75%{transform:translate(-50%,-50%) scale(1);opacity:1;}
     100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
   }
-  .post-caption{font-size:0.9rem;color:var(--ink);line-height:1.5;margin-bottom:14px;}
+  .post-caption{font-size:0.9rem;color:var(--ink);line-height:1.55;margin-bottom:16px;}
   .post-exercises{font-size:0.76rem;color:var(--ink-soft);margin-bottom:12px;font-weight:600;}
-  .comment-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+  .comment-list{
+    display:flex;flex-direction:column;gap:8px;margin-bottom:12px;margin-top:4px;
+    padding-top:14px;border-top:1.5px dashed var(--line);
+  }
+  .comment-list:empty{border-top:none;padding-top:0;}
   .comment{background:var(--mustard-light);border-radius:8px;padding:9px 13px;font-size:0.82rem;border:1.5px solid var(--line);}
   .comment-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
   .comment-body{flex:1;min-width:0;}
@@ -432,7 +508,8 @@
   @media(max-width:480px){
     .sticker-grid{grid-template-columns:repeat(8,1fr);}
     .title-block h1{font-size:1.7rem;}
-    .exercise-row-top{grid-template-columns:1.6fr 0.7fr 0.7fr auto;}
+    .exercise-row-top{grid-template-columns:1.4fr 0.55fr 0.55fr 0.6fr auto;}
+    .mood-row{grid-template-columns:repeat(5, 1fr);}
   }
 
   #js-error-banner{
@@ -509,32 +586,17 @@ service cloud.firestore {
 
 
 <div id="onboarding">
-  <div class="onb-card" id="onb-step-email">
+  <div class="onb-card" id="onb-step-auth">
     <div class="eyebrow">Day 1 of 66</div>
     <h1>Sixty-Six Sticks</h1>
     <p>A shared tracker for habits that actually stick — no self-sabotage if you slip, just back on it tomorrow.</p>
     <label>Email address</label>
-    <input type="email" id="onb-email" placeholder="you@email.com" autocomplete="email">
-    <div class="onb-error" id="onb-email-error">Enter a valid email address</div>
-    <button class="btn-main" id="onb-send-link">Send me a sign-in link</button>
-    <div class="fine">No password — we'll email you a one-time link to sign in. Only approved accounts can get in.</div>
-  </div>
-
-  <div class="onb-card" id="onb-step-sent" style="display:none;">
-    <div class="eyebrow">Check your inbox</div>
-    <h1>Link sent ✉️</h1>
-    <p>We sent a sign-in link to <strong id="onb-sent-email">—</strong>. Open it on this device to continue — it only works once.</p>
-    <button class="switch-link" id="onb-use-different-email">Use a different email</button>
-  </div>
-
-  <div class="onb-card" id="onb-step-confirm" style="display:none;">
-    <div class="eyebrow">Almost there</div>
-    <h1>Confirm your email</h1>
-    <p>Looks like you opened this link on a different browser or device than you sent it from — just confirm the email it was sent to.</p>
-    <label>Email address</label>
-    <input type="email" id="onb-confirm-email" placeholder="you@email.com" autocomplete="email">
-    <div class="onb-error" id="onb-confirm-error">Enter the email the link was sent to</div>
-    <button class="btn-main" id="onb-confirm-btn">Confirm and sign in</button>
+    <input type="email" id="onb-auth-email" placeholder="you@email.com" autocomplete="email">
+    <label>Password</label>
+    <input type="password" id="onb-auth-password" placeholder="••••••••" autocomplete="current-password">
+    <div class="onb-error" id="onb-auth-error">Enter a valid email and password</div>
+    <button class="btn-main" id="onb-auth-submit">Sign in</button>
+    <div class="fine">Only approved accounts can get in. <button type="button" class="switch-link" id="onb-auth-toggle-mode" style="font-size:0.78rem;">New here? Create an account</button></div>
   </div>
 
   <div class="onb-card" id="onb-step-name" style="display:none;">
@@ -575,6 +637,7 @@ service cloud.firestore {
     <button class="tab" data-tab="week">Week</button>
     <button class="tab" data-tab="feed">Feed</button>
     <button class="tab" data-tab="us">Us</button>
+    <button class="tab" data-tab="profile">Profile</button>
   </div>
 
   <!-- TODAY -->
@@ -627,6 +690,11 @@ service cloud.firestore {
             <button class="chip" data-group="gymtype" data-val="Other">Other</button>
           </div>
 
+          <div class="cardio-km-field" id="cardio-km-field" style="display:none;">
+            <label for="in-cardio-km">Distance (km) — if it was a run</label>
+            <input type="number" id="in-cardio-km" placeholder="e.g. 5" min="0" step="0.1">
+          </div>
+
           <div class="exercise-list" id="exercise-list"></div>
           <button type="button" class="add-exercise-btn" id="add-exercise">+ Add exercise</button>
 
@@ -675,16 +743,38 @@ service cloud.firestore {
       <div class="field">
         <div class="field-label"><span class="ico">🌙</span> Mood tonight</div>
         <div class="mood-row">
-          <button class="mood-btn" data-group="mood" data-val="1">😩</button>
-          <button class="mood-btn" data-group="mood" data-val="2">😕</button>
-          <button class="mood-btn" data-group="mood" data-val="3">😐</button>
-          <button class="mood-btn" data-group="mood" data-val="4">🙂</button>
-          <button class="mood-btn" data-group="mood" data-val="5">🥰</button>
+          <button class="mood-btn" data-group="mood" data-val="🥳">🥳</button>
+          <button class="mood-btn" data-group="mood" data-val="🤩">🤩</button>
+          <button class="mood-btn" data-group="mood" data-val="😍">😍</button>
+          <button class="mood-btn" data-group="mood" data-val="🥰">🥰</button>
+          <button class="mood-btn" data-group="mood" data-val="😄">😄</button>
+          <button class="mood-btn" data-group="mood" data-val="🙂">🙂</button>
+          <button class="mood-btn" data-group="mood" data-val="😌">😌</button>
+          <button class="mood-btn" data-group="mood" data-val="😎">😎</button>
+          <button class="mood-btn" data-group="mood" data-val="😴">😴</button>
+          <button class="mood-btn" data-group="mood" data-val="🥹">🥹</button>
+          <button class="mood-btn" data-group="mood" data-val="😐">😐</button>
+          <button class="mood-btn" data-group="mood" data-val="😑">😑</button>
+          <button class="mood-btn" data-group="mood" data-val="🤔">🤔</button>
+          <button class="mood-btn" data-group="mood" data-val="😕">😕</button>
+          <button class="mood-btn" data-group="mood" data-val="😟">😟</button>
+          <button class="mood-btn" data-group="mood" data-val="🥺">🥺</button>
+          <button class="mood-btn" data-group="mood" data-val="😬">😬</button>
+          <button class="mood-btn" data-group="mood" data-val="😅">😅</button>
+          <button class="mood-btn" data-group="mood" data-val="😢">😢</button>
+          <button class="mood-btn" data-group="mood" data-val="😭">😭</button>
+          <button class="mood-btn" data-group="mood" data-val="😡">😡</button>
+          <button class="mood-btn" data-group="mood" data-val="😤">😤</button>
+          <button class="mood-btn" data-group="mood" data-val="😰">😰</button>
+          <button class="mood-btn" data-group="mood" data-val="🤒">🤒</button>
         </div>
       </div>
 
       <div class="field">
-        <div class="field-label"><span class="ico">✏️</span> Anything on your mind?</div>
+        <div class="field-label-row">
+          <div class="field-label"><span class="ico">✏️</span> Anything on your mind?</div>
+          <button type="button" class="privacy-toggle" id="notes-privacy-toggle" data-private="false" aria-pressed="false">🌍 Visible to others</button>
+        </div>
         <textarea id="in-notes" placeholder="How today actually felt — no need to make it neat."></textarea>
       </div>
 
@@ -741,6 +831,7 @@ service cloud.firestore {
       <div id="rewards-list"></div>
       <div class="reward-add-row">
         <input type="text" id="in-reward-name" placeholder="Add a reward — new running headphones, a massage…">
+        <input type="url" id="in-reward-link" placeholder="Link to buy it (optional)">
         <button type="button" id="add-reward-btn">Add</button>
       </div>
     </div>
@@ -760,6 +851,12 @@ service cloud.firestore {
   <div class="panel" id="panel-us">
     <div id="us-content"><div class="loading-line">gathering everyone's data…</div></div>
   </div>
+
+  <!-- PROFILE (your own posts only) -->
+  <div class="panel" id="panel-profile">
+    <div id="profile-tab-header"><div class="loading-line">loading your profile…</div></div>
+    <div id="profile-content"><div class="loading-line">pulling up your posts…</div></div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -769,6 +866,7 @@ service cloud.firestore {
     <div class="unlock-emoji">🎉</div>
     <div class="unlock-title">Reward unlocked</div>
     <div class="unlock-name" id="unlock-name">—</div>
+    <a class="unlock-buy-btn" id="unlock-buy-link" href="#" target="_blank" rel="noopener" style="display:none;">🛍️ Buy it now</a>
     <button type="button" class="unlock-close" id="unlock-close">Nice!</button>
   </div>
 </div>
@@ -789,9 +887,11 @@ service cloud.firestore {
     <p id="profile-modal-sub" style="color:var(--ink-soft);font-size:0.85rem;line-height:1.5;margin:0 0 18px;"></p>
     <div class="profile-photo-picker">
       <div class="profile-photo-circle" id="profile-photo-circle">–</div>
-      <div>
+      <div class="profile-photo-actions">
         <input type="file" id="profile-photo-input" accept="image/*" style="display:none;">
-        <button type="button" class="switch-link" id="profile-photo-btn">Add / change photo</button>
+        <input type="file" id="profile-photo-camera-input" accept="image/*" capture="user" style="display:none;">
+        <button type="button" class="switch-link" id="profile-photo-btn">Choose photo</button>
+        <button type="button" class="switch-link" id="profile-photo-camera-btn">📷 Take a photo</button>
       </div>
     </div>
     <label>Your goals for these 66 days</label>
@@ -840,11 +940,6 @@ if(!NEEDS_SETUP){
     console.error('Firebase init failed', err);
   }
 }
-
-// Always send magic links back to the real live site, never wherever this
-// page happens to be opened from — a local file:// path isn't a valid
-// redirect target and causes Firebase's auth/invalid-continue-uri error.
-const LIVE_APP_URL = 'https://jasminekees.github.io/sixtysixsticks/';
 
 const ROOT = 'our66'; // top-level collection namespace, matches the Firestore rules
 const START_KEY = 'meta:start-date';
@@ -903,6 +998,16 @@ function avatarInnerHtml(name, profile){
   if(profile && profile.photo) return '<img class="avatar-photo" src="'+profile.photo+'">';
   const initial = (name||'').trim().charAt(0).toUpperCase();
   return escapeHtml(initial || '?');
+}
+
+// Deterministic per-person accent color (same person always gets the same
+// color, without needing to store a color choice anywhere) — used for the
+// Feed post card's accent border so posts read as "whose" at a glance.
+const ACCENT_COLORS = ['var(--coral)','var(--cobalt)','var(--teal)','var(--mustard-ink)','var(--pink)'];
+function personAccentColor(name){
+  let hash = 0;
+  for(let i=0;i<(name||'').length;i++){ hash = (hash*31 + name.charCodeAt(i)) & 0xffffffff; }
+  return ACCENT_COLORS[Math.abs(hash) % ACCENT_COLORS.length];
 }
 
 // Consecutive-day streak. Counts backward from today; if today isn't logged
@@ -1076,6 +1181,7 @@ async function fsListKind(kind){
 function logDocId(user, date){ return user+'__'+date; }
 
 let pendingAccountEmail = null;
+let authMode = 'signin'; // 'signin' or 'signup', toggled on the auth card
 
 function showOnbStep(id){
   document.querySelectorAll('#onboarding .onb-card').forEach(c=> c.style.display='none');
@@ -1084,21 +1190,15 @@ function showOnbStep(id){
   document.getElementById('onboarding').style.display = 'flex';
 }
 
-// Completes a magic-link sign-in once we know which email it was sent to
-// (either remembered from this device, or confirmed by hand).
-async function completeSignInWithLink(email){
-  try{
-    await auth.signInWithEmailLink(email, window.location.href);
-    localStorage.removeItem('our66_pending_email');
-    window.history.replaceState({}, document.title, window.location.pathname);
-    // onAuthStateChanged (wired in init) picks up from here automatically.
-  }catch(err){
-    console.error('Magic link sign-in failed', err);
-    showOnbStep('onb-step-email');
-    const errEl = document.getElementById('onb-email-error');
-    errEl.textContent = "That link didn't work — it may have expired or already been used. Try sending a new one.";
-    errEl.classList.add('show');
-  }
+function authErrorMessage(err){
+  const code = err && err.code;
+  if(code==='auth/wrong-password' || code==='auth/invalid-credential') return "That password doesn't match. Try again, or check for typos.";
+  if(code==='auth/user-not-found') return "No account with that email yet — use \"Create an account\" below.";
+  if(code==='auth/email-already-in-use') return 'An account already exists for that email — try signing in instead.';
+  if(code==='auth/weak-password') return 'Choose a password with at least 6 characters.';
+  if(code==='auth/invalid-email') return 'Enter a valid email address.';
+  if(code==='auth/too-many-requests') return 'Too many attempts — wait a bit and try again.';
+  return describeFsError(err);
 }
 
 // Runs once we have a confirmed, signed-in Firebase user. Looks up whether
@@ -1130,68 +1230,68 @@ async function enterWithUser(user){
   }
 }
 
+function setAuthMode(mode){
+  authMode = mode;
+  const submitBtn = document.getElementById('onb-auth-submit');
+  const toggleBtn = document.getElementById('onb-auth-toggle-mode');
+  const passwordInput = document.getElementById('onb-auth-password');
+  if(mode === 'signup'){
+    submitBtn.textContent = 'Create account';
+    toggleBtn.textContent = 'Already have an account? Sign in';
+    passwordInput.autocomplete = 'new-password';
+  } else {
+    submitBtn.textContent = 'Sign in';
+    toggleBtn.textContent = 'New here? Create an account';
+    passwordInput.autocomplete = 'current-password';
+  }
+  document.getElementById('onb-auth-error').classList.remove('show');
+}
+
 function wireSignIn(){
-  document.getElementById('onb-send-link').onclick = async ()=>{
-    const input = document.getElementById('onb-email');
-    const email = input.value.trim().toLowerCase();
-    const errEl = document.getElementById('onb-email-error');
-    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-      errEl.textContent = 'Enter a valid email address';
+  document.getElementById('onb-auth-toggle-mode').onclick = ()=>{
+    setAuthMode(authMode === 'signin' ? 'signup' : 'signin');
+  };
+
+  document.getElementById('onb-auth-submit').onclick = async ()=>{
+    const emailInput = document.getElementById('onb-auth-email');
+    const passwordInput = document.getElementById('onb-auth-password');
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+    const errEl = document.getElementById('onb-auth-error');
+
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !password){
+      errEl.textContent = 'Enter a valid email and password';
       errEl.classList.add('show');
-      input.style.borderColor = 'var(--coral)';
-      input.focus();
       return;
     }
     errEl.classList.remove('show');
-    input.style.borderColor = '';
 
-    const btn = document.getElementById('onb-send-link');
+    const btn = document.getElementById('onb-auth-submit');
     btn.disabled = true;
     const label = btn.textContent;
-    btn.textContent = 'Sending…';
+    btn.textContent = authMode === 'signup' ? 'Creating account…' : 'Signing in…';
 
-    const actionCodeSettings = {
-      url: LIVE_APP_URL,
-      handleCodeInApp: true
-    };
     try{
-      await auth.sendSignInLinkToEmail(email, actionCodeSettings);
-      localStorage.setItem('our66_pending_email', email);
-      document.getElementById('onb-sent-email').textContent = email;
-      showOnbStep('onb-step-sent');
+      if(authMode === 'signup'){
+        await auth.createUserWithEmailAndPassword(email, password);
+      } else {
+        await auth.signInWithEmailAndPassword(email, password);
+      }
+      // onAuthStateChanged (wired in init) picks up from here automatically.
     }catch(err){
-      console.error('sendSignInLinkToEmail failed', err);
-      errEl.textContent = describeFsError(err);
+      console.error('auth failed', err);
+      errEl.textContent = authErrorMessage(err);
       errEl.classList.add('show');
     }
     btn.disabled = false;
     btn.textContent = label;
   };
 
-  document.getElementById('onb-use-different-email').onclick = ()=>{
-    localStorage.removeItem('our66_pending_email');
-    document.getElementById('onb-email').value = '';
-    showOnbStep('onb-step-email');
-  };
-
-  document.getElementById('onb-confirm-btn').onclick = async ()=>{
-    const input = document.getElementById('onb-confirm-email');
-    const email = input.value.trim().toLowerCase();
-    const errEl = document.getElementById('onb-confirm-error');
-    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-      errEl.classList.add('show');
-      input.focus();
-      return;
-    }
-    errEl.classList.remove('show');
-    const btn = document.getElementById('onb-confirm-btn');
-    btn.disabled = true;
-    const label = btn.textContent;
-    btn.textContent = 'Confirming…';
-    await completeSignInWithLink(email);
-    btn.disabled = false;
-    btn.textContent = label;
-  };
+  // Submitting via Enter key from either field.
+  ['onb-auth-email','onb-auth-password'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('onb-auth-submit').click(); });
+  });
 
   // Wired immediately, never gated behind a network call, so a slow or
   // failed connection can't leave Start doing nothing.
@@ -1212,7 +1312,17 @@ function wireSignIn(){
     btn.textContent = 'Starting…';
 
     const email = pendingAccountEmail || (auth.currentUser && auth.currentUser.email.toLowerCase());
-    await fsSet('account', email, { name: name, createdAt: new Date().toISOString() });
+    const accountOk = await fsSet('account', email, { name: name, createdAt: new Date().toISOString() });
+
+    btn.disabled = false;
+    btn.textContent = label;
+
+    if(!accountOk){
+      showErrorBanner(describeFsError(lastFsError));
+      document.getElementById('onb-error').textContent = "Couldn't save your account — see the red banner above for why.";
+      document.getElementById('onb-error').classList.add('show');
+      return;
+    }
 
     const meta = await fsGet('meta', 'config');
     if(!meta || !meta.startDate){
@@ -1220,9 +1330,7 @@ function wireSignIn(){
       await fsSet('meta', 'config', { startDate: sd });
     }
     ME = name;
-
-    btn.disabled = false;
-    btn.textContent = label;
+    await fsSet('follows', ME, { following: [ME] });
 
     document.getElementById('onboarding').style.display = 'none';
     openProfileModal(true, ()=>{
@@ -1256,22 +1364,10 @@ async function init(){
   auth.onAuthStateChanged(async (user)=>{
     if(user){
       await enterWithUser(user);
-    } else if(!auth.isSignInWithEmailLink(window.location.href)){
-      showOnbStep('onb-step-email');
+    } else {
+      showOnbStep('onb-step-auth');
     }
   });
-
-  // If this load *is* the magic link being opened, complete the sign-in —
-  // either automatically (same device that requested it) or by asking to
-  // confirm the email (opened somewhere else, e.g. a different browser).
-  if(auth.isSignInWithEmailLink(window.location.href)){
-    const rememberedEmail = localStorage.getItem('our66_pending_email');
-    if(rememberedEmail){
-      await completeSignInWithLink(rememberedEmail);
-    } else {
-      showOnbStep('onb-step-confirm');
-    }
-  }
 }
 
 async function boot(){
@@ -1303,6 +1399,7 @@ function wireTabs(){
       if(t.dataset.tab==='us') renderUs();
       if(t.dataset.tab==='week'){ renderWeek(); renderRewards(); }
       if(t.dataset.tab==='feed') renderFeed();
+      if(t.dataset.tab==='profile') renderProfileTab();
     };
   });
 }
@@ -1360,7 +1457,11 @@ function wireForm(){
         document.getElementById('gym-extra').classList.toggle('show', btn.dataset.val==='yes');
         if(btn.dataset.val==='no') selections.gymtype = null;
         colorChip(btn, btn.dataset.val==='yes' ? 'sky' : 'blush');
-      } else if(group==='gymtype'){ selections.gymtype = btn.dataset.val; colorChip(btn,'sky'); }
+      } else if(group==='gymtype'){
+        selections.gymtype = btn.dataset.val;
+        colorChip(btn,'sky');
+        document.getElementById('cardio-km-field').style.display = btn.dataset.val==='Cardio' ? 'block' : 'none';
+      }
       else if(group==='eating'){ selections.eating = btn.dataset.val; colorChip(btn, btn.dataset.val==='clean'?'sage':'blush'); }
       else if(group==='drink'){
         selections.drink = btn.dataset.val;
@@ -1381,6 +1482,14 @@ function wireForm(){
     };
   });
   document.getElementById('in-steps').addEventListener('input', updateStepsBar);
+
+  const privacyBtn = document.getElementById('notes-privacy-toggle');
+  if(privacyBtn) privacyBtn.onclick = ()=>{
+    const isPrivate = privacyBtn.dataset.private === 'true';
+    privacyBtn.dataset.private = isPrivate ? 'false' : 'true';
+    privacyBtn.setAttribute('aria-pressed', isPrivate ? 'false' : 'true');
+    privacyBtn.textContent = isPrivate ? '🌍 Visible to others' : '🔒 Just for me';
+  };
 }
 function colorChip(btn, colorName){
   const map = {sage:'c-sage', blush:'c-blush', lavender:'c-lav', sky:'c-sky', butter:'c-butter'};
@@ -1403,6 +1512,7 @@ function makeExerciseRow(data){
     '<input type="text" class="ex-name" placeholder="Exercise (e.g. Squats)" value="'+escapeAttr(data.name||'')+'">'+
     '<input type="number" class="ex-sets" placeholder="Sets" min="0" value="'+(data.sets!=null?data.sets:'')+'">'+
     '<input type="number" class="ex-reps" placeholder="Reps" min="0" value="'+(data.reps!=null?data.reps:'')+'">'+
+    '<input type="number" class="ex-weight" placeholder="Kg" min="0" step="0.5" value="'+(data.weight!=null?data.weight:'')+'">'+
     '<button type="button" class="ex-remove">✕</button>'+
     '</div>'+
     '<input type="text" class="ex-note" placeholder="Note on this exercise (optional)" value="'+escapeAttr(data.note||'')+'">';
@@ -1421,9 +1531,10 @@ function collectExercises(){
     const name = r.querySelector('.ex-name').value.trim();
     const sets = r.querySelector('.ex-sets').value;
     const reps = r.querySelector('.ex-reps').value;
+    const weight = r.querySelector('.ex-weight').value;
     const note = r.querySelector('.ex-note').value.trim();
-    if(name || sets || reps || note){
-      out.push({ name: name, sets: sets?parseInt(sets):null, reps: reps?parseInt(reps):null, note: note });
+    if(name || sets || reps || weight || note){
+      out.push({ name: name, sets: sets?parseInt(sets):null, reps: reps?parseInt(reps):null, weight: weight?parseFloat(weight):null, note: note });
     }
   });
   return out;
@@ -1500,7 +1611,15 @@ function resetTodayForm(){
   if(gymExtra) gymExtra.classList.remove('show');
   document.getElementById('exercise-list').innerHTML = '';
   document.getElementById('in-gym-notes').value = '';
+  document.getElementById('in-cardio-km').value = '';
+  document.getElementById('cardio-km-field').style.display = 'none';
   document.getElementById('in-notes').value = '';
+  const privacyBtn = document.getElementById('notes-privacy-toggle');
+  if(privacyBtn){
+    privacyBtn.dataset.private = 'false';
+    privacyBtn.setAttribute('aria-pressed', 'false');
+    privacyBtn.textContent = '🌍 Visible to others';
+  }
   selections = { gym:null, gymtype:null, eating:null, drink:null, caffeine:null, read:null, mood:null };
   pendingPhotos = [];
   renderPhotoGrid();
@@ -1531,6 +1650,7 @@ async function renderTodayForm(){
     if(e.steps){ document.getElementById('in-steps').value = e.steps; updateStepsBar(); }
     if(e.gym){ const b=document.querySelector('[data-group="gym"][data-val="'+e.gym+'"]'); if(b) b.click(); }
     if(e.gymtype){ const b=document.querySelector('[data-group="gymtype"][data-val="'+e.gymtype+'"]'); if(b) b.click(); }
+    if(e.cardioKm!=null) document.getElementById('in-cardio-km').value = e.cardioKm;
     if(e.exercises && e.exercises.length){
       document.getElementById('exercise-list').innerHTML = '';
       e.exercises.forEach(ex=> document.getElementById('exercise-list').appendChild(makeExerciseRow(ex)));
@@ -1542,6 +1662,12 @@ async function renderTodayForm(){
     if(e.read){ const b=document.querySelector('[data-group="read"][data-val="'+e.read+'"]'); if(b) b.click(); }
     if(e.mood){ const b=document.querySelector('[data-group="mood"][data-val="'+e.mood+'"]'); if(b) b.click(); }
     if(e.notes) document.getElementById('in-notes').value = e.notes;
+    if(e.notesPrivate){
+      const privacyBtn = document.getElementById('notes-privacy-toggle');
+      privacyBtn.dataset.private = 'true';
+      privacyBtn.setAttribute('aria-pressed', 'true');
+      privacyBtn.textContent = '🔒 Just for me';
+    }
   }catch(err){}
 }
 
@@ -1590,12 +1716,14 @@ function wireSave(){
       gymtype: selections.gymtype,
       exercises: selections.gym==='yes' ? collectExercises() : [],
       gymNotes: selections.gym==='yes' ? document.getElementById('in-gym-notes').value.trim() : '',
+      cardioKm: (selections.gym==='yes' && selections.gymtype==='Cardio') ? (parseFloat(document.getElementById('in-cardio-km').value)||null) : null,
       eating: selections.eating,
       drink: selections.drink,
       caffeine: selections.caffeine,
       read: selections.read,
       mood: selections.mood,
       notes: document.getElementById('in-notes').value.trim(),
+      notesPrivate: document.getElementById('notes-privacy-toggle').dataset.private === 'true',
       loggedAt: new Date().toISOString(),
       wasEdited: wasEdited
     };
@@ -1612,6 +1740,7 @@ function wireSave(){
       renderWeek();
       renderMyStreak();
       if(document.querySelector('.tab[data-tab="feed"]').classList.contains('active')) renderFeed();
+      if(document.querySelector('.tab[data-tab="profile"]').classList.contains('active')) renderProfileTab();
     }
     // Jumps straight to the Feed tab and renders it, so the person can see
     // their post land right after it finishes uploading.
@@ -1741,7 +1870,7 @@ async function renderWeek(){
     const cell = document.createElement('div');
     cell.className='mood-day';
     const emojiMap = {'1':'😩','2':'😕','3':'😐','4':'🙂','5':'🥰'};
-    cell.innerHTML = '<div class="d">'+dayLabels[i]+'</div><div class="e">'+(mood?emojiMap[mood]:(isFuture?'·':'—'))+'</div>';
+    cell.innerHTML = '<div class="d">'+dayLabels[i]+'</div><div class="e">'+(mood?(emojiMap[mood]||mood):(isFuture?'·':'—'))+'</div>';
     moodStrip.appendChild(cell);
   }
 
@@ -1773,9 +1902,12 @@ async function renderRewards(){
   }
   container.innerHTML = items.map((r,idx)=>{
     const unlocked = !!r.unlockedOn;
+    const hasLink = unlocked && r.link && /^https?:\/\//i.test(r.link);
+    const buyLinkHtml = hasLink ? '<a class="reward-buy-link" href="'+escapeAttr(r.link)+'" target="_blank" rel="noopener">🛍️ Buy it</a>' : '';
     return '<div class="reward-row'+(unlocked?' unlocked':'')+'">'
       + '<span class="reward-icon">'+(unlocked?'🎉':'🔒')+'</span>'
       + '<span class="reward-name">'+escapeHtml(r.name)+'</span>'
+      + buyLinkHtml
       + '<span class="reward-tag">'+(unlocked?'unlocked':'locked')+'</span>'
       + '<button type="button" class="reward-del" data-reward-idx="'+idx+'" aria-label="Remove reward">✕</button>'
       + '</div>';
@@ -1797,14 +1929,17 @@ function wireRewardAdd(){
   if(!btn) return;
   btn.onclick = async ()=>{
     const input = document.getElementById('in-reward-name');
+    const linkInput = document.getElementById('in-reward-link');
     const name = input.value.trim();
+    const link = linkInput.value.trim();
     if(!name) return;
     btn.disabled = true;
     const doc = await fsGet('rewards', ME);
     const items = (doc && doc.items) || [];
-    items.push({ name: name, unlockedOn: null });
+    items.push({ name: name, link: link || null, unlockedOn: null });
     await fsSet('rewards', ME, Object.assign({}, doc, { items: items }));
     input.value = '';
+    linkInput.value = '';
     btn.disabled = false;
     renderRewards();
   };
@@ -1827,14 +1962,21 @@ async function checkWeeklyReward(gymCount, eatCount, avgSteps, weekKey){
   items[nextIdx].unlockedOn = weekKey;
   claimedWeeks.push(weekKey);
   await fsSet('rewards', ME, Object.assign({}, doc, { items: items, claimedWeeks: claimedWeeks }));
-  showRewardUnlock(items[nextIdx].name);
+  showRewardUnlock(items[nextIdx].name, items[nextIdx].link);
   renderRewards();
 }
 
-function showRewardUnlock(name){
+function showRewardUnlock(name, link){
   const overlay = document.getElementById('unlock-overlay');
   if(!overlay) return;
   document.getElementById('unlock-name').textContent = name;
+  const buyLink = document.getElementById('unlock-buy-link');
+  if(link && /^https?:\/\//i.test(link)){
+    buyLink.href = link;
+    buyLink.style.display = 'inline-block';
+  } else {
+    buyLink.style.display = 'none';
+  }
   overlay.classList.add('show');
 }
 
@@ -1880,16 +2022,31 @@ function wireProfileModal(){
     document.getElementById('profile-overlay').classList.remove('show');
   };
 
-  const photoBtn = document.getElementById('profile-photo-btn');
-  const photoInput = document.getElementById('profile-photo-input');
-  if(photoBtn) photoBtn.onclick = ()=> photoInput.click();
-  if(photoInput) photoInput.onchange = async (e)=>{
-    const file = e.target.files && e.target.files[0];
+  // Shared handler for both photo sources — library picker and direct camera capture.
+  async function handleProfilePhotoFile(file){
     if(!file) return;
     try{
       pendingProfilePhoto = await resizeImage(file, 320, 0.6);
       document.getElementById('profile-photo-circle').innerHTML = '<img class="avatar-photo" src="'+pendingProfilePhoto+'">';
     }catch(err){ console.error('profile photo resize failed', err); }
+  }
+
+  const photoBtn = document.getElementById('profile-photo-btn');
+  const photoInput = document.getElementById('profile-photo-input');
+  if(photoBtn) photoBtn.onclick = ()=> photoInput.click();
+  if(photoInput) photoInput.onchange = async (e)=>{
+    await handleProfilePhotoFile(e.target.files && e.target.files[0]);
+    e.target.value = '';
+  };
+
+  // capture="user" opens the device's front camera directly on phones/tablets
+  // that support it; on desktop browsers without camera capture support, this
+  // just falls back to a normal file picker, so it's always safe to offer.
+  const cameraBtn = document.getElementById('profile-photo-camera-btn');
+  const cameraInput = document.getElementById('profile-photo-camera-input');
+  if(cameraBtn) cameraBtn.onclick = ()=> cameraInput.click();
+  if(cameraInput) cameraInput.onchange = async (e)=>{
+    await handleProfilePhotoFile(e.target.files && e.target.files[0]);
     e.target.value = '';
   };
 
@@ -1914,6 +2071,7 @@ function wireProfileModal(){
     }
     document.getElementById('profile-overlay').classList.remove('show');
     renderNavAvatar();
+    if(document.querySelector('.tab[data-tab="profile"]').classList.contains('active')) renderProfileTab();
     if(profileModalOnDone){
       const cb = profileModalOnDone;
       profileModalOnDone = null;
@@ -1922,21 +2080,29 @@ function wireProfileModal(){
   };
 }
 
-async function renderFeed(){
-  const container = document.getElementById('feed-content');
-  container.innerHTML = '<div class="loading-line">pulling up the feed…</div>';
+// Renders a list of posts into any container, optionally restricted to a set
+// of usernames. Used for both the shared Feed (people you follow) and the
+// Profile tab (just your own posts) so the two views share one code path.
+async function renderPostsInto(containerId, allowedUsers, emptyMessage){
+  const container = document.getElementById(containerId);
+  const retryId = containerId+'-retry';
+  container.innerHTML = '<div class="loading-line">pulling up the posts…</div>';
   const items = await fsListKind('log');
   if(items === null){
-    container.innerHTML = '<div class="loading-line">Couldn\'t load the feed. <button type="button" class="switch-link" id="feed-retry" style="font-size:0.85rem;">Try again</button></div>';
-    const retryBtn = document.getElementById('feed-retry');
-    if(retryBtn) retryBtn.onclick = renderFeed;
+    container.innerHTML = '<div class="loading-line">Couldn\'t load. <button type="button" class="switch-link" id="'+retryId+'" style="font-size:0.85rem;">Try again</button></div>';
+    const retryBtn = document.getElementById(retryId);
+    if(retryBtn) retryBtn.onclick = ()=> renderPostsInto(containerId, allowedUsers, emptyMessage);
     return;
   }
-  if(!items.length){
-    container.innerHTML = '<div class="loading-line">No posts yet — log today to start the feed.</div>';
+  const filtered = allowedUsers ? items.filter(it=>{
+    const sep = it.id.indexOf('__');
+    return allowedUsers.includes(it.id.slice(0,sep));
+  }) : items;
+  if(!filtered.length){
+    container.innerHTML = '<div class="loading-line">'+(emptyMessage || 'No posts yet — log today to get started.')+'</div>';
     return;
   }
-  const parsed = items.map(it=>{
+  const parsed = filtered.map(it=>{
     const sep = it.id.indexOf('__');
     return { user: it.id.slice(0,sep), date: it.id.slice(sep+2), data: it.data };
   }).sort((a,b)=>{
@@ -1979,6 +2145,7 @@ async function renderFeed(){
     if(e.steps) badges += '<span class="post-badge">'+e.steps.toLocaleString()+' steps</span>';
     if(e.gym==='yes') badges += '<span class="post-badge">'+escapeHtml(e.gymtype||'Gym')+'</span>';
     else if(e.gym==='no') badges += '<span class="post-badge">rest day</span>';
+    if(e.cardioKm) badges += '<span class="post-badge">🏃 '+e.cardioKm+'km</span>';
     if(e.eating==='clean') badges += '<span class="post-badge">ate for fuel</span>';
     else if(e.eating==='treat') badges += '<span class="post-badge">ate for joy</span>';
     if(e.drink==='light') badges += '<span class="post-badge">🍷 1–2 drinks</span>';
@@ -1989,13 +2156,14 @@ async function renderFeed(){
       const shotWord = e.caffeine==='1' ? 'shot' : 'shots';
       badges += '<span class="post-badge">☕ '+e.caffeine+' '+shotWord+'</span>';
     }
-    if(e.mood) badges += '<span class="post-badge">'+emojiMap[e.mood]+'</span>';
+    if(e.mood) badges += '<span class="post-badge">'+(emojiMap[e.mood]||e.mood)+'</span>';
 
     let exHtml = '';
     if(e.exercises && e.exercises.length){
       exHtml = '<div class="post-exercises">' + e.exercises.map(x=>{
         let s = '<div>'+escapeHtml(x.name||'exercise');
         if(x.sets) s += ' · '+x.sets+'x'+(x.reps||'');
+        if(x.weight) s += ' @ '+x.weight+'kg';
         if(x.note) s += ' — <em>'+escapeHtml(x.note)+'</em>';
         s += '</div>';
         return s;
@@ -2043,14 +2211,25 @@ async function renderFeed(){
       ? escapeHtml(item.user)+' edited Day '+dayNum
       : escapeHtml(item.user)+' completed their Day '+dayNum;
 
-    html += '<div class="post-card">'
+    let captionHtml = '';
+    if(e.notes){
+      const isAuthor = item.user===ME;
+      if(!e.notesPrivate){
+        captionHtml = '<div class="post-caption">'+escapeHtml(e.notes)+'</div>';
+      } else if(isAuthor){
+        captionHtml = '<div class="post-caption">🔒 <em>Just for you:</em> '+escapeHtml(e.notes)+'</div>';
+      }
+      // Private notes from someone else simply don't render at all.
+    }
+
+    html += '<div class="post-card" style="--accent-color:'+personAccentColor(item.user)+';">'
       + '<div class="post-head"><div class="post-who"><div class="post-avatar">'+avatarHtml+'</div><div><div class="post-name">'+escapeHtml(item.user)+'</div><div class="post-date">'+fmtShort(item.date)+(e.loggedAt?' · '+fmtTime(e.loggedAt):'')+'</div></div></div><div class="post-head-right"><span class="post-day-badge">DAY '+dayNum+'</span>'+deleteBtnHtml+'</div></div>'
       + '<div class="post-action-line">'+actionLine+'</div>'
       + '<div class="post-badges">'+badges+'</div>'
       + photosHtml
       + exHtml
       + gymNotesHtml
-      + (e.notes ? '<div class="post-caption">'+escapeHtml(e.notes)+'</div>' : '')
+      + captionHtml
       + '<div class="post-actions">'+likeButtonHtml(postReactions, postTargetKey)+'</div>'
       + likeSummaryHtml(postReactions)
       + commentsHtml
@@ -2072,7 +2251,7 @@ async function renderFeed(){
       const comments = (commentsDoc && commentsDoc.items) || [];
       comments.push({ author: ME, text: text, ts: new Date().toISOString() });
       await fsSet('comments', owner+'__'+date, { items: comments });
-      renderFeed();
+      renderPostsInto(containerId, allowedUsers, emptyMessage);
     };
   });
 
@@ -2103,7 +2282,7 @@ async function renderFeed(){
     btn.onclick = async ()=>{
       btn.disabled = true;
       await toggleLike(btn.dataset.reactionTarget);
-      renderFeed();
+      renderPostsInto(containerId, allowedUsers, emptyMessage);
     };
   });
 
@@ -2156,7 +2335,7 @@ async function renderFeed(){
       await fsDelete('reactions', key);
       if(logOk){
         showToast('Post deleted');
-        renderFeed();
+        renderPostsInto(containerId, allowedUsers, emptyMessage);
         renderDayCounterAndSheet();
         renderWeek();
       } else {
@@ -2168,18 +2347,54 @@ async function renderFeed(){
   });
 }
 
+// The list of usernames whose posts you see in the Feed. Everyone
+// auto-follows themselves on account setup, so this always includes at
+// least your own posts even before you've followed anyone else.
+async function getFollowing(){
+  const doc = await fsGet('follows', ME);
+  if(doc && Array.isArray(doc.following) && doc.following.length) return doc.following;
+  return [ME];
+}
+
+async function renderFeed(){
+  const following = await getFollowing();
+  await renderPostsInto('feed-content', following, "No posts yet from people you follow — check the Us tab to follow someone, or log today to post your own.");
+}
+
+async function renderProfileTab(){
+  const headerEl = document.getElementById('profile-tab-header');
+  headerEl.innerHTML = '<div class="loading-line">loading your profile…</div>';
+  const profile = await fsGet('profile', ME);
+  headerEl.innerHTML =
+    '<div class="profile-tab-card">'
+    + '<div class="profile-tab-avatar">'+avatarInnerHtml(ME, profile)+'</div>'
+    + '<div><div class="profile-tab-name">'+escapeHtml(ME)+'</div><button type="button" class="switch-link profile-tab-edit" id="profile-tab-edit-btn">Edit profile</button></div>'
+    + '</div>'
+    + (profile && (profile.goals || profile.why) ? '<div class="profile-tab-bio">'
+      + (profile.goals ? '<strong>Goals:</strong> '+escapeHtml(profile.goals)+'<br>' : '')
+      + (profile.why ? '<strong>Why:</strong> '+escapeHtml(profile.why) : '')
+      + '</div>' : '');
+  const editBtn = document.getElementById('profile-tab-edit-btn');
+  if(editBtn) editBtn.onclick = ()=> openProfileModal(false, null);
+
+  await renderPostsInto('profile-content', [ME], "You haven't posted yet — log today to get started.");
+}
+
 async function renderUs(){
   const container = document.getElementById('us-content');
   container.innerHTML = '<div class="loading-line">gathering everyone\'s data…</div>';
-  const items = await fsListKind('log');
+
+  const [items, accounts, myFollowing] = await Promise.all([
+    fsListKind('log'),
+    fsListKind('account'),
+    getFollowing()
+  ]);
+
   if(items === null){
     container.innerHTML = '<div class="loading-line">Couldn\'t load — check your connection and Firebase setup.</div>';
     return;
   }
-  if(!items.length){
-    container.innerHTML = '<div class="loading-line">No one has logged yet — go log your first day.</div>';
-    return;
-  }
+
   const byUser = {};
   items.forEach(it=>{
     const sep = it.id.indexOf('__');
@@ -2191,20 +2406,18 @@ async function renderUs(){
 
   const today = todayStr();
   const monday = mondayOf(today);
-  const users = Object.keys(byUser);
-  const profiles = await Promise.all(users.map(u=> fsGet('profile', u)));
-  const profileMap = {};
-  users.forEach((u,i)=> profileMap[u] = profiles[i]);
 
-  let html = '';
-  let colorIdx = 0;
-  for(const user of users){
-    colorIdx++;
-    const entries = byUser[user].sort((a,b)=> b.date.localeCompare(a.date));
+  // Leaderboard: only people you follow, ranked by current streak. Missing a
+  // day breaks the streak (computeStreakFromDates already enforces this —
+  // it only counts an unbroken run ending today or yesterday).
+  const board = myFollowing.map(user=>{
+    const entries = (byUser[user] || []).sort((a,b)=> b.date.localeCompare(a.date));
     const dateSet = new Set(entries.map(e=>e.date));
     const streak = computeStreakFromDates(dateSet);
     const lastDate = entries.length ? entries[0].date : null;
-    const lastNote = entries.length ? (entries[0].data.notes || null) : null;
+    const lastEntry = entries.length ? entries[0] : null;
+    const lastNoteHidden = lastEntry && lastEntry.data.notesPrivate && user!==ME;
+    const lastNote = lastEntry && !lastNoteHidden ? (lastEntry.data.notes || null) : null;
     let gymW=0, eatW=0;
     entries.forEach(e=>{
       if(e.date >= monday){
@@ -2212,23 +2425,88 @@ async function renderUs(){
         if(e.data.eating==='clean') eatW++;
       }
     });
-    const pClass = colorIdx===1?'p1':(colorIdx===2?'p2':'');
-    html += '<div class="card person-card '+pClass+'">'
-      + '<div class="person-head"><div class="post-avatar" style="margin-right:10px;">'+avatarInnerHtml(user, profileMap[user])+'</div><h3 style="flex:1;">'+escapeHtml(user)+(user===ME?' (you)':'')+'</h3>'
-      + '<span class="streak-badge">'+streak+' day streak</span></div>'
-      + '<div class="stat-row">'
-      + '<div class="stat"><div class="v">'+gymW+'/4</div><div class="l">gym this wk</div></div>'
-      + '<div class="stat"><div class="v">'+eatW+'/4</div><div class="l">clean days wk</div></div>'
-      + '<div class="stat"><div class="v">'+(lastDate?fmtShort(lastDate):'—')+'</div><div class="l">last logged</div></div>'
+    return { user, streak, lastDate, lastNote, gymW, eatW };
+  }).sort((a,b)=> b.streak - a.streak || a.user.localeCompare(b.user));
+
+  const profiles = await Promise.all(board.map(b=> fsGet('profile', b.user)));
+  const profileMap = {};
+  board.forEach((b,i)=> profileMap[b.user] = profiles[i]);
+
+  const medals = ['🥇','🥈','🥉'];
+  let html = '<div class="leaderboard">';
+  if(!board.length){
+    html += '<div class="reward-empty">You\'re not following anyone yet — find people below.</div>';
+  }
+  board.forEach((b, i)=>{
+    const rankLabel = medals[i] || ('#'+(i+1));
+    html += '<div class="leaderboard-row'+(b.user===ME?' me':'')+'">'
+      + '<div class="lb-rank">'+rankLabel+'</div>'
+      + '<div class="post-avatar" style="margin-right:10px;">'+avatarInnerHtml(b.user, profileMap[b.user])+'</div>'
+      + '<div class="lb-info">'
+        + '<div class="lb-name">'+escapeHtml(b.user)+(b.user===ME?' (you)':'')+'</div>'
+        + '<div class="lb-sub">'+b.gymW+'/4 gym · '+b.eatW+'/4 fuel · last '+(b.lastDate?fmtShort(b.lastDate):'—')+'</div>'
+        + (b.user!==ME ? '<button type="button" class="lb-unfollow" data-unfollow-target="'+escapeAttr(b.user)+'">Unfollow</button>' : '')
+      + '</div>'
+      + '<div class="lb-streak"><div class="lb-streak-num">'+b.streak+'</div><div class="lb-streak-label">day streak</div></div>'
       + '</div>';
-    if(lastNote){
-      html += '<div class="note-bubble">"'+escapeHtml(lastNote)+'"<span class="date">'+fmtShort(lastDate)+'</span></div>';
-    } else {
-      html += '<div class="empty-note">No note yet.</div>';
+    if(b.lastNote){
+      html += '<div class="note-bubble">"'+escapeHtml(b.lastNote)+'"<span class="date">'+fmtShort(b.lastDate)+'</span></div>';
     }
+  });
+  html += '</div>';
+
+  // Discovery — anyone with an account you don't already follow, so there's
+  // a way in even though the leaderboard itself only shows people you follow.
+  const others = accounts ? accounts
+    .map(a=> a.data && a.data.name)
+    .filter(name=> name && name!==ME && !myFollowing.includes(name))
+    .filter((name,i,arr)=> arr.indexOf(name)===i)
+    : [];
+
+  if(others.length){
+    html += '<div class="card"><h3>Find people</h3><div class="rewards-sub">Follow someone to see their posts in your Feed and leaderboard.</div>';
+    others.forEach(name=>{
+      html += '<div class="find-person-row"><span>'+escapeHtml(name)+'</span><button type="button" class="follow-btn" data-follow-target="'+escapeAttr(name)+'">Follow</button></div>';
+    });
     html += '</div>';
   }
+
   container.innerHTML = html;
+
+  container.querySelectorAll('.follow-btn').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const target = btn.dataset.followTarget;
+      btn.disabled = true;
+      const following = await getFollowing();
+      if(!following.includes(target)) following.push(target);
+      const ok = await fsSet('follows', ME, { following: following });
+      if(!ok){
+        showToast("Couldn't update — see red banner for why");
+        showErrorBanner(describeFsError(lastFsError));
+        btn.disabled = false;
+        return;
+      }
+      renderUs();
+    };
+  });
+
+  container.querySelectorAll('.lb-unfollow').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const target = btn.dataset.unfollowTarget;
+      btn.disabled = true;
+      const following = await getFollowing();
+      const idx = following.indexOf(target);
+      if(idx !== -1) following.splice(idx,1);
+      const ok = await fsSet('follows', ME, { following: following });
+      if(!ok){
+        showToast("Couldn't update — see red banner for why");
+        showErrorBanner(describeFsError(lastFsError));
+        btn.disabled = false;
+        return;
+      }
+      renderUs();
+    };
+  });
 }
 
 function escapeHtml(s){
